@@ -1,9 +1,8 @@
 import React from "react";
-
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="pt-16">
       <div className="flex justify-between">
@@ -13,15 +12,42 @@ export default function Login() {
 
         <div className="flex w-2/4 flex-col justify-center items-center">
           <div className="w-1/2">
-            <h1 className="text-4xl font-semibold mb-3">Log in to ShopWiz</h1>
+            <h1 className="text-4xl font-semibold mb-3">Create an account</h1>
             <h2 className="text-lg">Enter your details below</h2>
 
             <form className="mt-7">
+              <div className="mb-5 flex justify-center">
+                <input type="file" id="fileInput" className="hidden" />
+                <label
+                  htmlFor="fileInput"
+                  className="cursor-pointer w-24 h-24 rounded-full border-2 border-dashed border-gray-400 flex items-center justify-center transition duration-300 ease-in-out hover:bg-gray-100"
+                  aria-label="Upload Image"
+                >
+                  <span className="text-gray-400 text-center">Upload Image</span>
+                </label>
+              </div>
+
+              <div className="mb-5">
+                <input
+                  type="text"
+                  className="border-b-2 w-full outline-none"
+                  placeholder="Full Name"
+                />
+              </div>
+
               <div className="mb-5">
                 <input
                   type="email"
                   className="border-b-2 w-full outline-none"
                   placeholder="Email"
+                />
+              </div>
+
+              <div className="mb-5">
+                <input
+                  type="number"
+                  className="border-b-2 w-full outline-none"
+                  placeholder="Phone Number"
                 />
               </div>
 
@@ -41,12 +67,12 @@ export default function Login() {
 
               <div className="flex justify-center">
                 <h1 className="text-gray-600">
-                Don't have an account?
+                  Already have an account?
                   <Link
-                  to={"/register"}
-                    className="text-blue-600 ml-1 border-b-2 border-blue-400"
+                    to={"/login"}
+                    className="text-blue-600 ml-2 border-b-2 border-blue-400"
                   >
-                    Sign Up
+                    Log in
                   </Link>
                 </h1>
               </div>
