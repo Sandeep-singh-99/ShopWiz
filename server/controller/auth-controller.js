@@ -14,7 +14,7 @@ const register = async (req, res) => {
             })
         }
 
-        const user = new Auth.create({ email, password, username, phone, imageUrl, cloudinaryId });
+        const user = await Auth.create({ email, password, username, phone, imageUrl, cloudinaryId });
 
         const token = user.generateToken();
 
@@ -39,4 +39,65 @@ const register = async (req, res) => {
     }
 }
 
-module.exports = { register }
+const Login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await Auth.findOne({ email })
+
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid credentials",
+                success: false,
+            })
+        }
+
+        const isMatch = await user.comparePassword(password)
+
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Invalid credentials",
+                success: false,
+            })
+        }
+
+        const token = user.generateToken()
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 3600000,
+        })
+
+        res.status(200).json({
+            message: "User logged in successfully",
+            success: true,
+            data: user,
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+            success: false,
+        })
+    }
+}
+
+const Logout = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        res.status(200).json({
+            message: "User logged out successfully",
+            success: true,
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+            success: false,
+        })
+    }
+}
+
+
+
+module.exports = { register, Login, Logout }
