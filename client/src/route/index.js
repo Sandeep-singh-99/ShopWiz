@@ -1,11 +1,19 @@
-import React from 'react';
+import { createBrowserRouter } from "react-router-dom";
 
-const Index = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+import App from "../App";
+import Home from "../screen/Home";
 
-export default Index;
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App/>,
+        children: [
+            {
+                path: "",
+                element: <Home/>
+            }
+        ]
+    }
+])
+
+export default router;
