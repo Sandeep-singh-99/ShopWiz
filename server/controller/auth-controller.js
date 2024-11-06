@@ -2,7 +2,9 @@ const Auth = require("../models/auth-model");
 
 const register = async (req, res) => {
     try {
-        const {path: imageUrl, filename: cloudinaryId} = req.file;
+        // const {path: imageUrl, filename: cloudinaryId} = req.file;
+        const imageUrl = req.file ? req.file.path : null;
+        const cloudinaryId = req.file ? req.file.filename : null;
         const { email, password, username, phone } = req.body;
 
         const userExists = await Auth.findOne({ email });

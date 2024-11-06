@@ -9,6 +9,7 @@ const ConnectDB = require('./config/db')
 const authRouter = require('./router/auth-router')
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 app.use(cookieParser())
 

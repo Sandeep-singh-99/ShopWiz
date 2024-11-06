@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const authSchema = new Schema({
     imageUrl: {
         type: String,
-        required: true
     },
 
     cloudinaryId: {
