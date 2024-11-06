@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { register } from "../redux/slice/auth-slice";
 
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [uploadedImage, setUploadedImage] = useState(null);
   const [formData, setFormData] = useState({
     imageUrl: null, // Store the image URL as a string
@@ -45,18 +48,21 @@ export default function Register() {
     // ... rest of your code (potentially dispatch register action)
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      dispatch(register(data))
+      // const response = await axios.post(
+      //   "http://localhost:5000/api/auth/register",
+      //   data,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
       navigate("/login");
+      alert("Registration successful");
       // Handle successful registration
     } catch (error) {
+      alert("Registration failed");
       // Handle registration errors
     }
   };
