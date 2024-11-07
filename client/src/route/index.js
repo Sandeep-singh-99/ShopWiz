@@ -4,6 +4,7 @@ import App from "../App";
 import Home from "../screen/Home";
 import Login from "../components/Login";
 import Register from "../components/SignUp";
+import Profile from "../screen/Profile";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
             {
                 path: "register",
                 element: <Register/>
+            },
+            {
+                path: "profile",
+                element: <Profile/>
             }
         ]
     }

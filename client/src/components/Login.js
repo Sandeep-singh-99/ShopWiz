@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="pt-16">
       <div className="flex justify-between">
@@ -19,7 +28,10 @@ export default function Login() {
             <form className="mt-7">
               <div className="mb-5">
                 <input
+                  name="email"
                   type="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="border-b-2 w-full outline-none"
                   placeholder="Email"
                 />
@@ -27,7 +39,10 @@ export default function Login() {
 
               <div className="mb-5">
                 <input
+                  name="password"
                   type="password"
+                  onChange={handleChange}
+                  value={formData.password}
                   className="border-b-2 w-full outline-none"
                   placeholder="Password"
                 />
@@ -41,9 +56,9 @@ export default function Login() {
 
               <div className="flex justify-center">
                 <h1 className="text-gray-600">
-                Don't have an account?
+                  Don't have an account?
                   <Link
-                  to={"/register"}
+                    to={"/register"}
                     className="text-blue-600 ml-1 border-b-2 border-blue-400"
                   >
                     Sign Up
