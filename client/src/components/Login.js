@@ -1,16 +1,40 @@
 import React, { useState } from "react";
 
 import img1 from "../assets/dl.beatsnoop 1.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../redux/slice/auth-slice";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
+  const dispatch = useDispatch(); // Initialize the dispatch function
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  // Initialize the form data state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // Handle form input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    try {
+      dispatch(login(data));
+      navigate("/") // Redirect to home page
+
+      alert("Logged in successfully");
+    } catch (error) {
+      alert("Error logging in");
+      console.log("Error: ", error);
+    }
   };
 
   return (
@@ -25,7 +49,7 @@ export default function Login() {
             <h1 className="text-4xl font-semibold mb-3">Log in to ShopWiz</h1>
             <h2 className="text-lg">Enter your details below</h2>
 
-            <form className="mt-7">
+            <form className="mt-7" onSubmit={handleSubmit}>
               <div className="mb-5">
                 <input
                   name="email"
