@@ -1,15 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-
 function App() {
+  const location = useLocation();
+  const hideHeader = ["/admin-login"];
   return (
-   <>
-   <Header/>
-   <Outlet/>
-   <Footer/>
-   </>
+    <>
+      {!hideHeader.includes(location.pathname) && <Header />}
+      <Outlet />
+      {!hideHeader.includes(location.pathname) && <Footer />}
+    </>
   );
 }
 
