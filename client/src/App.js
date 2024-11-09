@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 
 function App() {
   const location = useLocation();
-  const hideHeader = ["/admin-login"];
+  const hideHeader = ["/admin-login", "/admin-home"];
   return (
     <>
       {!hideHeader.includes(location.pathname) && <Header />}
