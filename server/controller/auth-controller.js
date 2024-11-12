@@ -124,4 +124,38 @@ const checkAuth = async (req, res) => {
     }
 }
 
-module.exports = { register, Login, Logout, checkAuth }
+const adminLogin = async(req, res) => {
+    try {
+        const { userId, password } = req.body;
+
+        const adminUser = await Admin.findOne({ userId })
+
+        if (!adminUser) {
+            return res.status(400).json({
+                message: "Invalid credentials",
+                success: false,
+            })
+        }
+
+        const isMatch = await adminUser.comparePassword(password)
+
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Invalid credentials",
+                success: false,
+            })
+        }
+
+        res.status(200).json({
+            message: "Admin logged in successfully",
+            success: true,
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+            success: false,
+        })
+    }
+}
+
+module.exports = { register, Login, Logout, checkAuth, adminLogin }
