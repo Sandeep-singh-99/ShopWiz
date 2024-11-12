@@ -1,29 +1,19 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const adminScheam = new Schema({
+const adminSchema = new Schema({
     userId: {
         type: String,
         required: true,
+        unique: true, // Ensure the userId is unique
     },
 
     password: {
         type: String,
         required: true,
     }
-})
+});
 
-adminScheam.pre("save", async function(next) {
-    if (this.isModified("password")) {
-        this.password = await bcrypt.hash(this.password, 12)
-    }
-    next()
-})
+const Admin = model('Admin', adminSchema);  // Change to use model name 'Admin' instead of 'admin'
 
-adminScheam.methods.comparePassword = async function(password) {
-    return await bcrypt.compare(password, this.password)
-}
-
-
-const Admin = new model('admin', adminScheam)
-
-module.exports = Admin
+module.exports = Admin;

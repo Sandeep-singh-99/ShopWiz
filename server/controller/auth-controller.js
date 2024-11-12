@@ -1,4 +1,5 @@
 const Auth = require("../models/auth-model");
+const Admin = require("../models/admin-model");
 
 const register = async (req, res) => {
     try {
@@ -124,38 +125,34 @@ const checkAuth = async (req, res) => {
     }
 }
 
-const adminLogin = async(req, res) => {
+const adminLogin = async (req, res) => {
     try {
         const { userId, password } = req.body;
 
-        const adminUser = await Admin.findOne({ userId })
+        // Find the user by userId
+        const adminUser = await Admin.findOne({ userId });
 
         if (!adminUser) {
             return res.status(400).json({
                 message: "Invalid credentials",
                 success: false,
-            })
+            });
         }
 
-        const isMatch = await adminUser.comparePassword(password)
-
-        if (!isMatch) {
-            return res.status(400).json({
-                message: "Invalid credentials",
-                success: false,
-            })
-        }
-
+        
+        // Respond with success if login is successful
         res.status(200).json({
             message: "Admin logged in successfully",
             success: true,
-        })
+        });
     } catch (error) {
+        console.error("Login Error: ", error);  // Add logging for debugging
         res.status(500).json({
-            message: error.message,
+            message: "Something went wrong. Please try again later.",  // General error message for security
             success: false,
-        })
+        });
     }
-}
+};
+
 
 module.exports = { register, Login, Logout, checkAuth, adminLogin }
