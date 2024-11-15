@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Radio } from "antd";
 import { useNavigate } from "react-router-dom";
 import TabPane from "antd/es/tabs/TabPane";
@@ -8,6 +8,16 @@ import Order from "./Order";
 
 export default function AdminHome() {
   const [mode, setMode] = useState("left");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/admin-login");
+    } else {
+      navigate("/admin");
+    }
+  },[navigate])
   
   return (
     <>

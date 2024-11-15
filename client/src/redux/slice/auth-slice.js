@@ -56,11 +56,27 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, thunkApi) 
   }
 })
 
+
+export const adminLogin = createAsyncThunk("auth/adminLogin", async (data, thunkApi) => {
+  try {
+    const response = await axios.post("http://localhost:5000/api/auth/admin-login", data, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    localStorage.setItem("adminToken", response.data)
+    return response.data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+})
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     data: null,
     isLoading: false,
+    isToken: localStorage.getItem("authToken") || null,
     isAuthenticated: false,
     isError: false
   },
@@ -131,6 +147,23 @@ const authSlice = createSlice({
     builder.addCase(checkAuth.rejected, (state, action) => {
       state.isLoading = false
       state.isError = true
+    })
+
+    builder.addCase(adminLogin.fulfilled, (state, action) => {
+      state.data = action.payload
+      state.isToken = action.payload
+      state.isLoading = false
+      state.isError = false
+    })
+
+    builder.addCase(adminLogin.rejected, (state, action) => {
+      state.isError = true
+      state.isLoading = false
+    })
+
+    builder.addCase(adminLogin.pending, (state, action) => {
+      state.isLoading = true
+      state.isError = false
     })
   }
 });
