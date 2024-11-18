@@ -18,7 +18,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-10">
-          <i class="ri-shopping-cart-2-line text-3xl"></i>
+          <i class="ri-shopping-cart-2-line text-black text-3xl"></i>
           <Link to={"login"} className="border text-white font-semibold px-4 py-2 rounded-md bg-[#db4444]">
             Login
           </Link>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Radio } from "antd";
+import { Tabs} from "antd";
 import { useNavigate } from "react-router-dom";
 import TabPane from "antd/es/tabs/TabPane";
 import Product from "./Product";
