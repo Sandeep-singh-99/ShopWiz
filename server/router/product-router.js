@@ -3,7 +3,9 @@ const router = express.Router()
 
 const productController = require('../controller/product-controller')
 
-router.route('/addProduct').post(productController.addProduct)
+const upload = require('../middleware/uploadMiddleware')
+
+router.route('/addProduct').post(upload.array('productImages') ,productController.addProduct)
 
 router.route('/getProduct').post(productController.getProducts)
 
