@@ -10,11 +10,25 @@ export const fetchProduct = createAsyncThunk("product/fetchProduct", async (_, t
     }
 })
 
+export const addProduct = createAsyncThunk("product/addProduct", async (data, thunkApi) => {
+    try {
+        const response = await axios.post("http://localhost:5000/api/product/addProduct", data , {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        return response.data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data);
+    }
+})
+
 
 const productSlice = createSlice({
     name: "product",
     initialState: {
         product: [],
+        data: null,
         error: null,
         loading: false
     },
@@ -31,6 +45,22 @@ const productSlice = createSlice({
         })
 
         builder.addCase(fetchProduct.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
+
+        builder.addCase(addProduct.fulfilled, (state, action) => {
+            state.data = action.payload;
+            state.loading = false;
+            state.error = null;
+        })
+
+        builder.addCase(addProduct.pending, (state, action) => {
+            state.loading = true;
+            state.error = null;
+        })
+
+        builder.addCase(addProduct.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         })
