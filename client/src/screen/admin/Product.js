@@ -71,7 +71,7 @@ export default function Product() {
       data.append("productCategory", formData.productCategory);
 
       formData.productImage.forEach((img) => {
-        data.append("productImage", img);
+        data.append("productImages", img);
       });
 
       dispatch(addProduct(data));
