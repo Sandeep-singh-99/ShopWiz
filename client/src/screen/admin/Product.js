@@ -89,7 +89,7 @@ export default function Product() {
       } // Log the data to check
   
       if (isUpdateMode) {
-        dispatch(updateProduct({ id: updateProductId, data: data }))
+        dispatch(updateProduct({ id: updateProductId, data }))
           .then(() => {
             message.success("Product updated successfully");
             handleCancel();

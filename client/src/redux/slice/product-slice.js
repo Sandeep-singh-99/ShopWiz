@@ -127,13 +127,22 @@ const productSlice = createSlice({
     });
 
     builder.addCase(updateProduct.fulfilled, (state, action) => {
-      const index = state.product.findIndex(
-        (product) => product._id === action.payload._id
-      );
+      console.log("Updated Product Payload:", action.payload); // Debug log
+      const index = state.product.findIndex((product) => product._id === action.payload._id);
+    
       if (index !== -1) {
-        state.product[index] = action.payload;
+        // Merge updated product data immutably
+        state.product[index] = { ...state.product[index], ...action.payload };
+      } else {
+        console.warn("Updated product ID not found in state:", action.payload._id);
+        // Optionally, add the product to the state if it should be there
+        state.product.push(action.payload);
       }
+    
+      state.loading = false;
+      state.error = null;
     });
+    
 
     builder.addCase(updateProduct.pending, (state, action) => {
       state.loading = true;
