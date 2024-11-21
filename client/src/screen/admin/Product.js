@@ -2,6 +2,9 @@ import { Button, Form, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, fetchProduct } from "../../redux/slice/product-slice";
+import CustomCard from "../../components/CustomCard";
+import { deleteProduct } from "../../redux/slice/product-slice";
+import { updateProduct } from "../../redux/slice/product-slice";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -16,6 +19,9 @@ export default function Product() {
     imagePreview: [], // Store the image URLs for preview
   });
 
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [updateProductId, setUpdateProductId] = useState(null);
+
   const products = useSelector((state) => state.product.product);
   const loading = useSelector((state) => state.product.loading);
   const error = useSelector((state) => state.product.error);
@@ -29,7 +35,9 @@ export default function Product() {
   const handleCancel = () => {
     setIsModalVisible(false);
     clearForm();
+    dispatch(fetchProduct()); // Refetch the entire product list
   };
+  
 
   const clearForm = () => {
     setFormData({
@@ -41,6 +49,8 @@ export default function Product() {
       productImage: [],
       imagePreview: [],
     });
+    setIsUpdateMode(false);
+    setUpdateProductId(null);
   };
 
   const handleChange = (e) => {
@@ -50,7 +60,6 @@ export default function Product() {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
 
-    // Append new files to the existing productImage and preview arrays
     const previews = files.map((file) => URL.createObjectURL(file));
 
     setFormData((prev) => ({
@@ -69,17 +78,68 @@ export default function Product() {
       data.append("productDescription", formData.productDescription);
       data.append("productBrand", formData.productBrand);
       data.append("productCategory", formData.productCategory);
-
+  
       formData.productImage.forEach((img) => {
-        data.append("productImages", img);
+        data.append("productImages", img); // Append images if present
       });
-
-      dispatch(addProduct(data));
-      message.success("Product added successfully");
-      handleCancel(); // Close modal after successful submission
+  
+      console.log("Sending data:", data);
+      for (let [key, value] of data.entries()) {
+        console.log(`${key}:`, value);
+      } // Log the data to check
+  
+      if (isUpdateMode) {
+        dispatch(updateProduct({ id: updateProductId, data: data }))
+          .then(() => {
+            message.success("Product updated successfully");
+            handleCancel();
+          })
+          .catch((err) => {
+            message.error(`Error updating product: ${err.message}`);
+          });
+      } else {
+        dispatch(addProduct(data))
+          .then(() => {
+            message.success("Product added successfully");
+            handleCancel();
+          })
+          .catch((err) => {
+            message.error(`Error adding product: ${err.message}`);
+          });
+      }
     } catch (error) {
       message.error(error.message);
     }
+  };
+  
+  
+
+  const handleUpdate = (product) => {
+    console.log("Product to update:", product._id);
+    
+    setFormData({
+      productName: product.productName,
+      productPrice: product.productPrice,
+      productDescription: product.productDescription,
+      productBrand: product.productBrand,
+      productCategory: product.productCategory,
+      productImage: [], // Reset files for editing
+      imagePreview: product.productImage || [],
+    });
+    //dispatch(updateProduct(product._id));
+    setUpdateProductId(product._id);
+    setIsUpdateMode(true);
+    setIsModalVisible(true);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteProduct(id))
+      .then(() => {
+        message.success("Product deleted successfully");
+      })
+      .catch((err) => {
+        message.error(`Error deleting product: ${err.message}`);
+      });
   };
 
   useEffect(() => {
@@ -98,36 +158,21 @@ export default function Product() {
 
       {/* Product List */}
       <div>
-        {loading && <p>Loading products...</p>}
-        {error && <p className="text-red-500">Error: {error}</p>}
         {!loading && !error && (
-          <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
             {products.length > 0 ? (
               products.map((item) => (
-                <div
+                <CustomCard
                   key={item._id}
-                  className="flex justify-between border-2 border-gray-400 p-2 mt-2"
-                >
-                  <div>
-                    <h1 className="text-xl font-semibold">{item.productName}</h1>
-                    <p className="text-gray-500">{item.productDescription}</p>
-                    <p className="text-gray-500">Brand: {item.productBrand}</p>
-                    <p className="text-gray-500">Category: {item.productCategory}</p>
-                  </div>
-                  <div>
-                    <h1 className="text-xl font-semibold">${item.productPrice}</h1>
-                    <div className="flex space-x-2">
-                      {item.productImage.map((imgUrl, index) => (
-                        <img
-                          key={index}
-                          src={imgUrl}
-                          alt={`${item.productName}-${index}`}
-                          className="w-20 h-20 object-cover"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                  name={item.productName} // Make sure this is a string
+                  price={item.productPrice} // Ensure it's a number or string
+                  category={item.productCategory}
+                  brand={item.productBrand}
+                  description={item.productDescription}
+                  images={item.productImage || []}
+                  onDelete={() => handleDelete(item._id)}
+                  onUpdate={() => handleUpdate(item)}
+                />
               ))
             ) : (
               <p>No products available</p>
@@ -138,7 +183,7 @@ export default function Product() {
 
       {/* Product Form */}
       <Modal
-        title="Add Product"
+        title={isUpdateMode ? "Update Product" : "Add Product"}
         visible={isModalVisible}
         onOk={formHandling}
         onCancel={handleCancel}
@@ -221,7 +266,7 @@ export default function Product() {
           </Form.Item>
 
           <Button type="primary" onClick={formHandling}>
-            Submit
+            {isUpdateMode ? "Update Product" : "Add Product"}
           </Button>
         </Form>
       </Modal>

@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import CustomCard from "../components/CustomCard";
 
 export default function Home() {
   return (
-    <div>Home</div>
-  )
+    <div>
+      Home Page
+    </div>
+  );
 }
