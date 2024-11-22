@@ -12,7 +12,7 @@ const CustomCard = ({ name, brand, category, price, description, images, onUpdat
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
       {/* Product Images */}
-      <div className="flex justify-center">
+      <div className="flex justify-center overflow-x-auto">
         {images && images.length > 0 ? (
           images.map((img, index) => (
             <img
