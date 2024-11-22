@@ -1,25 +1,24 @@
-import React from "react";
+import React from 'react';
 
-export default function CustomCard({
-  name,
-  price,
-  category,
-  brand,
-  description,
-  images,
-  onDelete,
-  onUpdate,
-}) {
+const CustomCard = ({ name, brand, category, price, description, images, onUpdate, onDelete }) => {
+  // Function to truncate the description
+  const truncateDescription = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + '...';
+  };
+
   return (
-    <div className="flex flex-col border rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white shadow-md rounded-lg p-4">
       {/* Product Images */}
-      <div className="flex space-x-2 overflow-x-auto pb-2">
-        {images.length > 0 ? (
-          images.map((image, index) => (
+      <div className="flex justify-center">
+        {images && images.length > 0 ? (
+          images.map((img, index) => (
             <img
               key={index}
-              src={image}
-              alt={`${name}-${index}`}
+              src={img}
+              alt={`Product Image ${index + 1}`}
               className="w-24 h-24 object-cover rounded-lg"
             />
           ))
@@ -49,7 +48,7 @@ export default function CustomCard({
         <p className="text-sm text-gray-500">
           Description:{" "}
           <span className="text-gray-700">
-            {description || "No description available"}
+            {truncateDescription(description || "No description available", 100)}
           </span>
         </p>
       </div>
@@ -58,17 +57,19 @@ export default function CustomCard({
       <div className="flex space-x-2 mt-4">
         <button
           onClick={onUpdate}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
         >
           Update
         </button>
         <button
           onClick={onDelete}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          className="bg-red-500 text-white px-4 py-2 rounded-lg"
         >
           Delete
         </button>
       </div>
     </div>
   );
-}
+};
+
+export default CustomCard;
