@@ -12,6 +12,7 @@ export default function Product() {
   const [formData, setFormData] = useState({
     productName: "",
     productPrice: "",
+    salesPrice: "",
     productDescription: "",
     productBrand: "",
     productCategory: "",
@@ -43,6 +44,7 @@ export default function Product() {
     setFormData({
       productName: "",
       productPrice: "",
+      salesPrice: "",
       productDescription: "",
       productBrand: "",
       productCategory: "",
@@ -75,6 +77,7 @@ export default function Product() {
       const data = new FormData();
       data.append("productName", formData.productName);
       data.append("productPrice", formData.productPrice);
+      data.append("salesPrice", formData.salesPrice);
       data.append("productDescription", formData.productDescription);
       data.append("productBrand", formData.productBrand);
       data.append("productCategory", formData.productCategory);
@@ -120,6 +123,7 @@ export default function Product() {
     setFormData({
       productName: product.productName,
       productPrice: product.productPrice,
+      salesPrice: product.salesPrice,
       productDescription: product.productDescription,
       productBrand: product.productBrand,
       productCategory: product.productCategory,
@@ -209,6 +213,17 @@ export default function Product() {
               onChange={handleChange}
               className="border-b-2 w-full outline-none"
               placeholder="Product Price"
+            />
+          </Form.Item>
+
+          <Form.Item label="Sales Price">
+            <input
+              type="number"
+              name="salesPrice"
+              value={formData.salesPrice}
+              onChange={handleChange}
+              className="border-b-2 w-full outline-none"
+              placeholder="Sales Price"
             />
           </Form.Item>
 

@@ -46,6 +46,9 @@ const CustomCard = ({ name, brand, category, price, description, images, onUpdat
           Price: <span className="text-green-500">${price || "0.00"}</span>
         </p>
         <p className="text-sm text-gray-500">
+          Sales Price: <span className="text-red-500">${price || "0.00"}</span>
+        </p>
+        <p className="text-sm text-gray-500">
           Description:{" "}
           <span className="text-gray-700">
             {truncateDescription(description || "No description available", 100)}
