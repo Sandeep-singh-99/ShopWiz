@@ -12,7 +12,7 @@ const addProduct = async (req, res) => {
       productName,
       productBrand,
       productPrice,
-      salsePrice,
+      salesPrice,
       productDescription,
       productCategory,
     } = req.body;
@@ -21,7 +21,7 @@ const addProduct = async (req, res) => {
       productName,
       productBrand,
       productPrice,
-      salsePrice,
+      salesPrice,
       productDescription,
       productCategory,
       productImage: productImages, // Store array of image paths
@@ -130,7 +130,7 @@ const deleteProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { productName, productPrice, salsePrice, productDescription, productBrand, productCategory } = req.body;
+    const { productName, productPrice, salesPrice, productDescription, productBrand, productCategory } = req.body;
     const productImages = req.files ? req.files.map((file) => file.path) : [];
     const cloudinaryIds = req.files ? req.files.map((file) => file.filename) : [];
 
@@ -138,7 +138,7 @@ const updateProduct = async (req, res) => {
     const updateData = {
       productName,
       productPrice,
-      salsePrice,
+      salesPrice,
       productDescription,
       productBrand,
       productCategory,
