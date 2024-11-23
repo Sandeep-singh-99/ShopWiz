@@ -11,6 +11,11 @@ const productSchema = new Schema({
         required: true
     },
 
+    salsePrice: {
+        type: Number,
+        required: true
+    },
+
     productPrice: {
         type: Number,
         required: true
