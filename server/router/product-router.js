@@ -11,6 +11,6 @@ router.route('/getProduct').post(productController.getProducts)
 
 router.route('/deleteProduct/:id').delete(productController.deleteProduct)
 
-router.route('/updateProduct/:id').put(productController.updateProduct)
+router.route('/updateProduct/:id').put(upload.any("productImages") ,productController.updateProduct)
 
 module.exports = router

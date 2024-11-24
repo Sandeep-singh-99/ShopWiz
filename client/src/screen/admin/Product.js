@@ -1,10 +1,14 @@
 import { Button, Form, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct, fetchProduct } from "../../redux/slice/product-slice";
+import {
+  addProduct,
+  fetchProduct,
+  deleteProduct,
+} from "../../redux/slice/product-slice";
 import CustomCard from "../../components/CustomCard";
-import { deleteProduct } from "../../redux/slice/product-slice";
-import { updateProduct } from "../../redux/slice/product-slice";
+
+import axios from "axios";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -29,6 +33,12 @@ export default function Product() {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  useEffect(() => {
+    if (products) {
+      console.log("Updated Products List:", products);
+    }
+  }, [products]); // Run this whenever products change
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -38,7 +48,6 @@ export default function Product() {
     clearForm();
     dispatch(fetchProduct()); // Refetch the entire product list
   };
-  
 
   const clearForm = () => {
     setFormData({
@@ -61,7 +70,6 @@ export default function Product() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-
     const previews = files.map((file) => URL.createObjectURL(file));
 
     setFormData((prev) => ({
@@ -71,8 +79,18 @@ export default function Product() {
     }));
   };
 
-  const formHandling = (e) => {
-    e.preventDefault();
+  // Handle Add Product
+  const handleAddProduct = () => {
+    if (
+      !formData.productName ||
+      !formData.productPrice ||
+      !formData.productDescription ||
+      !formData.productBrand
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
+
     try {
       const data = new FormData();
       data.append("productName", formData.productName);
@@ -81,45 +99,64 @@ export default function Product() {
       data.append("productDescription", formData.productDescription);
       data.append("productBrand", formData.productBrand);
       data.append("productCategory", formData.productCategory);
-  
+
       formData.productImage.forEach((img) => {
         data.append("productImages", img); // Append images if present
       });
-  
-      console.log("Sending data:", data);
-      for (let [key, value] of data.entries()) {
-        console.log(`${key}:`, value);
-      } // Log the data to check
-  
-      if (isUpdateMode) {
-        dispatch(updateProduct({ id: updateProductId, data }))
-          .then(() => {
-            message.success("Product updated successfully");
-            handleCancel();
-          })
-          .catch((err) => {
-            message.error(`Error updating product: ${err.message}`);
-          });
-      } else {
-        dispatch(addProduct(data))
-          .then(() => {
-            message.success("Product added successfully");
-            handleCancel();
-          })
-          .catch((err) => {
-            message.error(`Error adding product: ${err.message}`);
-          });
-      }
+
+      dispatch(addProduct(data));
+      message.success("Product added successfully");
+      handleCancel();
     } catch (error) {
-      message.error(error.message);
+      message.error(`Error: ${error.message || "Something went wrong"}`);
+    }
+  };
+
+  const handleUpdateProduct = async () => {
+    if (
+      !formData.productName ||
+      !formData.productPrice ||
+      !formData.productDescription ||
+      !formData.productBrand
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
+  
+    try {
+      // Prepare JSON payload
+      const payload = {
+        productName: formData.productName,
+        productPrice: formData.productPrice,
+        salesPrice: formData.salesPrice,
+        productDescription: formData.productDescription,
+        productBrand: formData.productBrand,
+        productCategory: formData.productCategory,
+        productImage: formData.imagePreview, // Use URLs or base64 strings for images
+      };
+  
+      const response = await axios.put(
+        `http://localhost:5000/api/product/updateProduct/${updateProductId}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (response.status !== 200) throw new Error("Failed to update product");
+      message.success("Product updated successfully");
+      handleCancel();
+    } catch (error) {
+      message.error(`Error: ${error.message}`);
     }
   };
   
-  
+
+  //  
 
   const handleUpdate = (product) => {
-    console.log("Product to update:", product._id);
-    
     setFormData({
       productName: product.productName,
       productPrice: product.productPrice,
@@ -127,23 +164,21 @@ export default function Product() {
       productDescription: product.productDescription,
       productBrand: product.productBrand,
       productCategory: product.productCategory,
-      productImage: [], // Reset files for editing
+      productImage: [],
       imagePreview: product.productImage || [],
     });
-    //dispatch(updateProduct(product._id));
     setUpdateProductId(product._id);
     setIsUpdateMode(true);
     setIsModalVisible(true);
   };
 
-  const handleDelete = (id) => {
-    dispatch(deleteProduct(id))
-      .then(() => {
-        message.success("Product deleted successfully");
-      })
-      .catch((err) => {
-        message.error(`Error deleting product: ${err.message}`);
-      });
+  const handleDelete = async (id) => {
+    try {
+      dispatch(deleteProduct(id));
+      message.success("Product deleted successfully");
+    } catch (err) {
+      message.error(`Error deleting product: ${err.message}`);
+    }
   };
 
   useEffect(() => {
@@ -168,8 +203,8 @@ export default function Product() {
               products.map((item) => (
                 <CustomCard
                   key={item._id}
-                  name={item.productName} // Make sure this is a string
-                  price={item.productPrice} // Ensure it's a number or string
+                  name={item.productName}
+                  price={item.productPrice}
                   category={item.productCategory}
                   brand={item.productBrand}
                   description={item.productDescription}
@@ -189,12 +224,12 @@ export default function Product() {
       <Modal
         title={isUpdateMode ? "Update Product" : "Add Product"}
         visible={isModalVisible}
-        onOk={formHandling}
+        onOk={isUpdateMode ? handleUpdateProduct : handleAddProduct} // Call appropriate function
         onCancel={handleCancel}
         footer={null}
       >
         <Form layout="vertical">
-          <Form.Item label="Product Name">
+          <Form.Item label="Product Name" required>
             <input
               type="text"
               name="productName"
@@ -205,7 +240,7 @@ export default function Product() {
             />
           </Form.Item>
 
-          <Form.Item label="Product Price">
+          <Form.Item label="Product Price" required>
             <input
               type="number"
               name="productPrice"
@@ -227,7 +262,7 @@ export default function Product() {
             />
           </Form.Item>
 
-          <Form.Item label="Product Description">
+          <Form.Item label="Product Description" required>
             <input
               type="text"
               name="productDescription"
@@ -238,7 +273,7 @@ export default function Product() {
             />
           </Form.Item>
 
-          <Form.Item label="Product Brand">
+          <Form.Item label="Product Brand" required>
             <input
               type="text"
               name="productBrand"
@@ -280,7 +315,10 @@ export default function Product() {
             </div>
           </Form.Item>
 
-          <Button type="primary" onClick={formHandling}>
+          <Button
+            type="primary"
+            onClick={isUpdateMode ? handleUpdateProduct : handleAddProduct}
+          >
             {isUpdateMode ? "Update Product" : "Add Product"}
           </Button>
         </Form>

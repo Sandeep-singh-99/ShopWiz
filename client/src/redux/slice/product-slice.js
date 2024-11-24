@@ -49,25 +49,22 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
-export const updateProduct = createAsyncThunk(
-  "product/updateProduct",
-  async ({ id, data }, thunkApi) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/api/product/updateProduct/${id}`,
-        data, // Pass the form data here
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // Important for handling file uploads
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data);
-    }
-  }
-);
+// export const updateProduct = createAsyncThunk(
+//   "products/updateProduct",
+//   async ({ id, data }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.put(`http://localhost:5000/api/products/updateProduct/${id}`, data, {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       });
+//       return response.data.product;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data || error.message);
+//     }
+//   }
+// );
+// ;
 
 const productSlice = createSlice({
   name: "product",
@@ -126,33 +123,54 @@ const productSlice = createSlice({
       state.error = action.payload;
     });
 
-    builder.addCase(updateProduct.fulfilled, (state, action) => {
-      console.log("Updated Product Payload:", action.payload); // Debug log
-      const index = state.product.findIndex((product) => product._id === action.payload._id);
+//     builder.addCase(updateProduct.fulfilled, (state, action) => {
+//       const updatedProduct = action.payload.data; // Access the updated product from the response
     
-      if (index !== -1) {
-        // Merge updated product data immutably
-        state.product[index] = { ...state.product[index], ...action.payload };
-      } else {
-        console.warn("Updated product ID not found in state:", action.payload._id);
-        // Optionally, add the product to the state if it should be there
-        state.product.push(action.payload);
-      }
+//       // Debug log to confirm the payload is correct
+//       console.log("Updated Product Payload:", updatedProduct);
     
-      state.loading = false;
-      state.error = null;
-    });
+//       if (!updatedProduct || !updatedProduct._id) {
+//         console.error("Product ID is missing or invalid:", updatedProduct);
+//         return;
+//       }
+    
+//       // Find the index of the product in the state
+//       const productIndex = state.product.findIndex((product) => product._id === updatedProduct._id);
+    
+//       if (productIndex !== -1) {
+//         // Update the product in the state immutably
+//         state.product[productIndex] = {
+//           ...state.product[productIndex],
+//           ...updatedProduct, // Merge the updated data
+//         };
+//         console.log(`Product with ID: ${updatedProduct._id} has been updated.`);
+//       } else {
+//         console.warn(`Product with ID: ${updatedProduct._id} not found in state.`);
+        
+//         // Optionally, add the product to the list if it should be there
+//         state.product.push(updatedProduct);
+//         console.log(`Product with ID: ${updatedProduct._id} added to the state.`);
+//       }
+    
+//       // Reset loading state and clear errors
+//       state.loading = false;
+//       state.error = null;
+//     });
+    
+    
+    
+    
     
 
-    builder.addCase(updateProduct.pending, (state, action) => {
-      state.loading = true;
-      state.error = null;
-    });
+//     builder.addCase(updateProduct.pending, (state, action) => {
+//       state.loading = true;
+//       state.error = null;
+//     });
 
-    builder.addCase(updateProduct.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
+//     builder.addCase(updateProduct.rejected, (state, action) => {
+//       state.loading = false;
+//       state.error = action.payload;
+//     });
   },
 });
 

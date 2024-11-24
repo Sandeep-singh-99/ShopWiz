@@ -77,79 +77,44 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// const updateProduct = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     // Handle file uploads for updating images
-//     const productImages = req.files ? req.files.map((file) => file.path) : [];
-//     const cloudinaryIds = req.files
-//       ? req.files.map((file) => file.filename)
-//       : [];
-
-//     const {
-//       productName,
-//       productBrand,
-//       productPrice,
-//       productDescription,
-//       productCategory,
-//     } = req.body;
-
-//     const updateFields = {
-//       productName,
-//       productBrand,
-//       productPrice,
-//       productDescription,
-//       productCategory,
-//     };
-
-//     // Only add images if they are uploaded
-//     if (productImages.length > 0) {
-//       updateFields.productImage = productImages;
-//       updateFields.cloudinaryId = cloudinaryIds;
-//     }
-
-//     const updatedProduct = await Product.findByIdAndUpdate(id, updateFields, {
-//       new: true,
-//     });
-
-//     res.status(200).json({
-//       message: "Product updated successfully",
-//       success: true,
-//       data: updatedProduct,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       message: error.message,
-//       success: false,
-//     });
-//   }
-// };
-
-
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { productName, productPrice, salesPrice, productDescription, productBrand, productCategory } = req.body;
-    const productImages = req.files ? req.files.map((file) => file.path) : [];
-    const cloudinaryIds = req.files ? req.files.map((file) => file.filename) : [];
 
-    // Find the product by ID and update the fields
-    const updateData = {
+    // Handle file uploads for updating images
+    const productImages = req.files ? req.files.map((file) => file.path) : [];
+    const cloudinaryIds = req.files
+      ? req.files.map((file) => file.filename)
+      : [];
+
+    const {
       productName,
-      productPrice,
-      salesPrice,
-      productDescription,
       productBrand,
+      productPrice,
+      productDescription,
+      productCategory,
+    } = req.body;
+
+    const updateFields = {
+      productName,
+      productBrand,
+      productPrice,
+      productDescription,
       productCategory,
     };
-    if (productImages.length > 0) updateData.productImage = productImages;
-    if (cloudinaryIds.length > 0) updateData.cloudinaryId = cloudinaryIds;
-    
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
-    
+
+    // Only add images if they are uploaded
+    if (productImages.length > 0) {
+      updateFields.productImage = productImages;
+      updateFields.cloudinaryId = cloudinaryIds;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateFields, {
+      new: true,
+    });
 
     if (!updatedProduct) {
+      console.log("Product not found");
       return res.status(404).json({
         message: "Product not found",
         success: false,
@@ -168,6 +133,50 @@ const updateProduct = async (req, res) => {
     });
   }
 };
+
+
+// const updateProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { productName, productPrice, salesPrice, productDescription, productBrand, productCategory } = req.body;
+//     const productImages = req.files ? req.files.map((file) => file.path) : [];
+//     const cloudinaryIds = req.files ? req.files.map((file) => file.filename) : [];
+
+//     // Find the product by ID and update the fields
+//     const updateData = {
+//       productName,
+//       productPrice,
+//       salesPrice,
+//       productDescription,
+//       productBrand,
+//       productCategory,
+//     };
+//     if (productImages.length > 0) updateData.productImage = productImages;
+//     if (cloudinaryIds.length > 0) updateData.cloudinaryId = cloudinaryIds;
+    
+//     console.log('Updating Product Data:', updateData);
+//     const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
+//     console.log('Updated Product:', updatedProduct);
+
+//     if (!updatedProduct) {
+//       return res.status(404).json({
+//         message: "Product not found",
+//         success: false,
+//       });
+//     }
+
+//     res.status(200).json({
+//       message: "Product updated successfully",
+//       success: true,
+//       data: updatedProduct,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error.message,
+//       success: false,
+//     });
+//   }
+// };
 
 
 module.exports = {

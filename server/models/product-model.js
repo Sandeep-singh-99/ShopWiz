@@ -33,7 +33,6 @@ const productSchema = new Schema({
 
     productImage: {
         type: [String],
-        required: true
     },
 
     cloudinaryId: {
