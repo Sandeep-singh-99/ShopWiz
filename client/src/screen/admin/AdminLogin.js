@@ -3,6 +3,7 @@ import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { adminLogin } from "../../redux/slice/auth-slice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AdminLogin() {
   const dispatch = useDispatch();
@@ -17,13 +18,14 @@ export default function AdminLogin() {
     if (token) {
       navigate("/admin");
     }
-  },[navigate])
+  }, []);
 
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = { userId, password };
+  
     dispatch(adminLogin(data))
       .unwrap()
       .then(() => {
@@ -31,9 +33,12 @@ export default function AdminLogin() {
         navigate("/admin");
       })
       .catch((err) => {
-        message.error( "Login failed");
+        localStorage.removeItem("adminToken"); // Remove token if login fails
+        message.error("Login failed");
       });
   };
+
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }

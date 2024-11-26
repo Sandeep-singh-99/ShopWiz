@@ -144,6 +144,7 @@ const adminLogin = async (req, res) => {
         res.status(200).json({
             message: "Admin logged in successfully",
             success: true,
+            adminUser,
         });
     } catch (error) {
         console.error("Login Error: ", error);  // Add logging for debugging
