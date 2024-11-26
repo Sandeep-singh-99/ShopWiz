@@ -40,6 +40,12 @@ const productSchema = new Schema({
     }
 })
 
+productSchema.pre('save', function (next) {
+    this.salesPrice = parseFloat(this.salesPrice).toFixed(2)
+    this.productPrice = parseFloat(this.productPrice).toFixed(2)
+    next()
+})
+
 const Product = new model("product", productSchema)
 
 module.exports = Product
