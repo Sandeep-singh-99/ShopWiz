@@ -33,11 +33,11 @@ export default function Product() {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(() => {
-    if (products) {
-      console.log("Updated Products List:", products);
-    }
-  }, [products]); // Run this whenever products change
+  // useEffect(() => {
+  //   if (products) {
+  //     console.log("Updated Products List:", products);
+  //   }
+  // }, [products]); // Run this whenever products change
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -80,7 +80,7 @@ export default function Product() {
   };
 
   // Handle Add Product
-  const handleAddProduct = () => {
+  const handleAddProduct = async () => {
     if (
       !formData.productName ||
       !formData.productPrice ||
@@ -104,7 +104,7 @@ export default function Product() {
         data.append("productImages", img); // Append images if present
       });
 
-      dispatch(addProduct(data));
+      await dispatch(addProduct(data));
       message.success("Product added successfully");
       handleCancel();
     } catch (error) {
