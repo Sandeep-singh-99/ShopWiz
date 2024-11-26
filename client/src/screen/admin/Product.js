@@ -205,6 +205,7 @@ export default function Product() {
                   key={item._id}
                   name={item.productName}
                   price={item.productPrice}
+                  salesPrice={item.salesPrice}
                   category={item.productCategory}
                   brand={item.productBrand}
                   description={item.productDescription}

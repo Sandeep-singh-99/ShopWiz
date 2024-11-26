@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomCard = ({ name, brand, category, price, description, images, onUpdate, onDelete }) => {
+const CustomCard = ({ name, brand, category, price, salesPrice ,description, images, onUpdate, onDelete }) => {
   // Function to truncate the description
   const truncateDescription = (text, maxLength) => {
     if (text.length <= maxLength) {
@@ -46,7 +46,7 @@ const CustomCard = ({ name, brand, category, price, description, images, onUpdat
           Price: <span className="text-green-500">${price || "0.00"}</span>
         </p>
         <p className="text-sm text-gray-500">
-          Sales Price: <span className="text-red-500">${price || "0.00"}</span>
+          Sales Price: <span className="text-red-500">${salesPrice || "0.00"}</span>
         </p>
         <p className="text-sm text-gray-500">
           Description:{" "}
