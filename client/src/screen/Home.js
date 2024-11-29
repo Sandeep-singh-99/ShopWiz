@@ -1,10 +1,15 @@
 import React from "react";
-import CustomCard from "../components/CustomCard";
+import VerticalProductMenu from "../components/VerticalProductMenu";
+import CarouselView from "../components/CarouselView";
+
 
 export default function Home() {
   return (
-    <div>
-      Home Page
+    <div className="px-28 py-10">
+      <div className="flex flex-row gap-10">
+        <VerticalProductMenu/>
+        <CarouselView/>
+      </div>
     </div>
   );
 }

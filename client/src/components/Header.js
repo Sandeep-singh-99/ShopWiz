@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <div className="shadow-xl">
+    <div className="border-b-2 border-black border-opacity-25">
       <div className="px-28 flex justify-between items-center pt-5 pb-3">
         <Link className=" text-4xl font-bold" to={"/"}>
           ShopWiz
