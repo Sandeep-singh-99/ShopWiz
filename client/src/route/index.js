@@ -10,6 +10,7 @@ import AdminHome from "../screen/admin/AdminHome";
 import Product from "../screen/admin/Product";
 import User from "../screen/admin/User";
 import Order from "../screen/admin/Order";
+import CategoryProduct from "../screen/CategoryProduct";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <Profile/>
             },
+
+            {
+                path: "category/:categoryName",
+                element: <CategoryProduct/>
+            }
         ],
     },
 

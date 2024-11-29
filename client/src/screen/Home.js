@@ -1,13 +1,13 @@
 import React from "react";
-import VerticalProductMenu from "../components/VerticalProductMenu";
 import CarouselView from "../components/CarouselView";
+import HorizontalCategory from "../components/HorizontalCategory";
 
 
 export default function Home() {
   return (
-    <div className="px-28 py-10">
-      <div className="flex flex-row gap-10">
-        <VerticalProductMenu/>
+    <div className="px-20 py-5">
+      <div className="flex flex-col gap-5">
+        <HorizontalCategory/>
         <CarouselView/>
       </div>
     </div>

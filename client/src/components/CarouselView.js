@@ -11,9 +11,9 @@ import img5 from '../assets/img5.webp'
 export default function CarouselView() {
   return (
     <Carousel dynamicHeight emulateTouch infiniteLoop autoPlay showStatus={false} showArrows={false} showIndicators={false} showThumbs={false}>
-      <div>
+      {/* <div>
         <img src={img1} alt='not showing'/>
-      </div>
+      </div> */}
 
       <div>
         <img src={img2} alt='not showing'/>
@@ -27,9 +27,9 @@ export default function CarouselView() {
         <img src={img4} alt='not showing'/>
       </div>
 
-      <div>
+      {/* <div>
         <img src={img5} alt='not showing'/>
-      </div>
+      </div> */}
       
     </Carousel>
   )
