@@ -36,7 +36,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Before Submission: ", formData);
+   // console.log("Form Data Before Submission: ", formData);
 
     const data = new FormData();
     data.append("file", uploadedImage); // Append the actual file object

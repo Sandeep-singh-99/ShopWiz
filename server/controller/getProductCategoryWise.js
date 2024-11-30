@@ -3,7 +3,7 @@ const Product = require("../models/product-model");
 const getProductCategoryWise = async (req, res) => {
     try {
         const { category } = req.params;
-        console.log("category", category);
+       // console.log("category", category);
         
 
         if (!category) {
