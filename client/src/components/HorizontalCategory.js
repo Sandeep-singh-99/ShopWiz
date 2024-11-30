@@ -33,17 +33,17 @@ export default function HorizontalCategory() {
     },
     {
       id: 4,
-      name: "Earpodes",
+      name: "Earphones",
       img: img4,
     },
     {
       id: 5,
-      name: "Mobile",
+      name: "Mobiles",
       img: img5,
     },
     {
       id: 6,
-      name: "Printer",
+      name: "Printers",
       img: img6,
     },
     {
@@ -73,7 +73,7 @@ export default function HorizontalCategory() {
     },
     {
       id: 12,
-      name: "Watch",
+      name: "Watches",
       img: img12,
     },
   ];
