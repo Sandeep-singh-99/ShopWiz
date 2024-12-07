@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../redux/slice/category-slice";
 import { fetchProduct } from "../redux/slice/product-slice";
@@ -75,7 +75,7 @@ export default function CategoryProduct() {
     { id: 3, name: "Camera" },
     { id: 4, name: "Earphones" },
     { id: 5, name: "Mobiles" },
-    { id: 6, name: "Printers" },
+    { id: 6, name: "Printers" },  
     { id: 7, name: "Processor" },
     { id: 8, name: "Refrigerator" },
     { id: 9, name: "Speakers" },
@@ -151,7 +151,7 @@ export default function CategoryProduct() {
             ) : sortedProducts.length > 0 ? (
               <div className="mt-5 grid grid-cols-3 gap-4">
                 {sortedProducts.map((product) => (
-                  <div key={product.id} className="shadow-lg rounded-lg">
+                  <Link to={`/product/${product.id}`} key={product.id} className="shadow-lg rounded-lg">
                     <div className="bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center">
                       <img
                         src={product?.productImage[0]}
@@ -178,7 +178,7 @@ export default function CategoryProduct() {
                         Add to Cart
                       </button>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (

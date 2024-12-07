@@ -11,6 +11,7 @@ import Product from "../screen/admin/Product";
 import User from "../screen/admin/User";
 import Order from "../screen/admin/Order";
 import CategoryProduct from "../screen/CategoryProduct";
+import ProductDetails from "../screen/ProductDetails";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: "category/:categoryName",
                 element: <CategoryProduct/>
+            },
+            {
+                path: "product/:id",
+                element: <ProductDetails/>
             }
         ],
     },
