@@ -6,7 +6,7 @@ export const fetchCategory = createAsyncThunk(
   async (category, thunkApi) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/getProductByCategory/categorywise/${category}`
+        `http://localhost:5000/api/getProductByCategory/categorywise/${category.join(",")}`
       );
       return response.data;
     } catch (error) {

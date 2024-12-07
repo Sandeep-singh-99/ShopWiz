@@ -13,8 +13,9 @@ const getProductCategoryWise = async (req, res) => {
             });
         }
 
+        const categories = category.split(",");
 
-        const products = await Product.find({ productCategory: category })
+        const products = await Product.find({ productCategory: {$in: categories} })
 
         if (products.length === 0) {
             return res.status(404).json({
