@@ -1,41 +1,59 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { fetchProductById } from "../redux/slice/product-slice";
+import { message } from "antd";
 
 export default function ProductDetails() {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams();
+  const { product, loading, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
-  const { product, loading, error } = useSelector((state) => state.product);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProductById(id))
+        .unwrap()
+        .then(() => {
+          message.success("Product fetched successfully.");
+        })
+        .catch(() => {
+          message.error("Failed to fetch product.");
+        });
+    }
+  }, [id, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchProductById(id)); // Fetch product details by ID
-  }, [id, dispatch]);
+    console.log("Fetched product:", product);
+  }, [product]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  return product ? (
+  // Safeguard against missing product or productImage
+  if (!product) return <p>No product details available.</p>;
+
+  return (
     <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row">
-        <img
-          src={product.productImage[0]}
-          alt={product.productName}
-          className="w-full md:w-1/2 h-auto object-contain"
-        />
-        <div className="p-4">
-          <h1 className="text-2xl font-semibold">{product.productName}</h1>
-          <p className="text-lg text-red-600">{product.salesPrice}</p>
-          <p className="line-through text-gray-500">{product.productPrice}</p>
-          <p className="mt-4">{product.description}</p>
-          <button className="mt-4 bg-red-600 text-white py-2 px-4 rounded">
-            Add to Cart
-          </button>
-        </div>
+      <h1 className="text-3xl font-bold mb-4">{product.productName}</h1>
+      <h3 className="text-xl">Brand: {product.productBrand}</h3>
+      <p className="text-gray-600">{product.productDescription}</p>
+      <p className="text-lg">
+        Price: <del>₹{product.productPrice}</del> <strong>₹{product.salesPrice}</strong>
+      </p>
+      <div className="flex flex-wrap gap-4 mt-4">
+        {product.productImage && product.productImage.length > 0 ? (
+          product.productImage.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={product.productName}
+              className="w-48 h-48 object-cover rounded-lg"
+            />
+          ))
+        ) : (
+          <p>No images available for this product.</p>
+        )}
       </div>
     </div>
-  ) : (
-    <p>Product not found.</p>
   );
 }

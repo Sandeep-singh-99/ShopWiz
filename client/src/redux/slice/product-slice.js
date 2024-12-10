@@ -15,6 +15,15 @@ export const fetchProduct = createAsyncThunk(
   }
 );
 
+export const fetchProductById = createAsyncThunk("product/fetchProductById", async (id, thunkApi) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/product/getProductById/${id}`);
+    return response.data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.response.data)
+  }
+})
+
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (data, thunkApi) => {
@@ -122,6 +131,23 @@ const productSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
+
+    builder.addCase(fetchProductById.fulfilled, (state, action) => {
+      state.product = action.payload.data;
+      state.loading = false;
+      state.error = null;
+    })
+
+    builder.addCase(fetchProductById.pending, (state, action) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(fetchProductById.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
 
 //     builder.addCase(updateProduct.fulfilled, (state, action) => {
 //       const updatedProduct = action.payload.data; // Access the updated product from the response

@@ -151,7 +151,7 @@ export default function CategoryProduct() {
             ) : sortedProducts.length > 0 ? (
               <div className="mt-5 grid grid-cols-3 gap-4">
                 {sortedProducts.map((product) => (
-                  <Link to={`/product/${product.id}`} key={product.id} className="shadow-lg rounded-lg">
+                  <Link to={"/product/"+product._id} key={product.id} className="shadow-lg rounded-lg">
                     <div className="bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center">
                       <img
                         src={product?.productImage[0]}
