@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+
 
 export default function HorizontalCardProduct({ category, heading }) {
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ export default function HorizontalCardProduct({ category, heading }) {
       </div>
 
       {/* Product List */}
-      <div className="flex items-center gap-6 overflow-hidden whitespace-nowrap scrollbar-hide transition-all">
+      <div className="flex items-center gap-6  overflow-hidden whitespace-nowrap scrollbar-hide transition-all">
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
               <div
@@ -53,7 +53,7 @@ export default function HorizontalCardProduct({ category, heading }) {
               <Link
                 key={product?._id}
                 to={`product/${product?._id}`}
-                className="w-[270px] h-[420px] rounded-lg shadow-lg flex flex-col p-4 transition-transform duration-300 hover:scale-105"
+                className="w-[270px] h-[420px] rounded-lg shadow-lg flex flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
               >
                 <div className="relative h-80">
                   <img

@@ -78,28 +78,34 @@ export default function HorizontalCategory() {
     },
   ];
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleCategoryClick = (categoryName) => {
-    navigate(`/category/${categoryName}`)
-  }
+    navigate(`/category/${categoryName}`);
+  };
 
   return (
-    <div className="flex flex-row gap-5 overflow-x-auto">
-      {category.map((item) => (
-        <div key={item.id} className="cursor-pointer" onClick={() => handleCategoryClick(item.name)}>
-          <div className="flex justify-center items-center w-20 h-20 rounded-full bg-[#e1e8f0]">
-            <img
-              className="h-12 transition-all duration-100 ease-in-out object-contain mix-blend-multiply hover:scale-125"
-              src={item.img}
-              alt={item.name}
-            />
+    <div className="container mx-auto">
+      <div className="flex items-center justify-between gap-6 sm:gap-3  scrollbar-none overflow-hidden">
+        {category.map((item) => (
+          <div
+            key={item.id}
+            className="cursor-pointer"
+            onClick={() => handleCategoryClick(item.name)}
+          >
+            <div className="flex justify-center items-center w-20 h-20 rounded-full bg-[#e1e8f0]">
+              <img
+                className="h-12 transition-all duration-100 ease-in-out object-contain mix-blend-multiply hover:scale-125"
+                src={item.img}
+                alt={item.name}
+              />
+            </div>
+            <div className="flex justify-center">
+              <span className="font-medium">{item.name}</span>
+            </div>
           </div>
-          <div className="flex justify-center">
-            <span>{item.name}</span>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
