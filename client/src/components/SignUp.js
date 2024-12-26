@@ -17,6 +17,8 @@ export default function Register() {
     password: "",
   });
 
+  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

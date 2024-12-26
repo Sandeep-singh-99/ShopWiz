@@ -1,35 +1,44 @@
-import React from 'react'
-import img1 from '../assets/dl.beatsnoop 1.png'
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import img1 from "../assets/dl.beatsnoop 1.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  return (
-    <div className='px-28'>
-      {/*  */}
-      <div className='flex justify-between mt-20 mb-20'>
-        <h1>Home / MyAccount</h1>
-        <div>
-          <h1>Welcome! <span className='text-[#e07575]'>Sandeep Singh</span></h1>
-        </div>
-      </div>
+  const data = JSON.parse(localStorage.getItem("loginData"));
+  const navigate = useNavigate()
 
-      {/* Profile */}
-      <div className='flex justify-between items-center'>
-        <div className='w-2/3 flex items-center'>
-          <img src={img1} alt='not showing' className='rounded-full w-56 h-56 object-cover'/>
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/")
+    }
+  })
+  return (
+    <div className="flex flex-col items-center mt-10">
+      <h1 className="text-2xl font-bold mb-5">User Profile</h1>
+      <div className="flex flex-col items-center gap-5">
+        {/* Display user profile image */}
+        <div className="h-32 w-32 rounded-full overflow-hidden">
+          {data?.imageUrl ? (
+            <img
+              src={data.imageUrl}
+              alt={data?.username || "Profile"}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <img
+              src={img1}
+              alt="Default"
+              className="h-full w-full object-cover"
+            />
+          )}
         </div>
-        <div className=''>
-          <h1 className='text-3xl'>Profile</h1>
-          <div className='mt-10'>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-            <h1 className='text-xl'>Name: Sandeep Singh</h1>
-          </div>
-          
+        {/* Display user details */}
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">{data?.username || "N/A"}</h2>
+          <p className="text-gray-500">{data?.email || "Email not available"}</p>
+          <p className="text-gray-500">{data?.phone || "Phone not available"}</p>
         </div>
       </div>
     </div>
-  )
+  );
 }

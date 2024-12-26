@@ -33,57 +33,50 @@ export default function ProductDetails() {
   if (!product) return <p>No product details available.</p>;
 
   return (
-    <div className="container mx-auto px-4 lg:px-20 py-8">
-      <div className="flex flex-col lg:flex-row items-start gap-8">
-        {/* Main Image Section */}
-        <div className="flex justify-center items-center border-2 border-gray-300 rounded-lg p-4 w-full lg:w-1/2">
-          <img
-            src={product.productImage && product.productImage[0]}
-            alt={product.productName || "Product Image"}
-            className="object-contain w-full h-80"
-          />
+    <div className="bg-gray-100">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-wrap -mx-4">
+          {/* Product Image */}
+          <div className="w-full md:w-1/2 px-4 mb-8">
+            <img
+              src={product.productImage && product.productImage[0]}
+              alt={product.productName || "Product Image"}
+              className="w-full h-96 object-contain mix-blend-multiply rounded-lg shadow-md mb-4"
+            />
+
+            <div className="flex gap-4 py-4 justify-center overflow-x-auto">
+              {product.productImage && product.productImage.length > 0 ? (
+                product.productImage.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={product.productName}
+                    className="size-16 sm:size-20 object-contain rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">
+                  No images available for this product.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Product Details */}
+          <div class="w-full md:w-1/2 px-4">
+            <h1 className="text-2xl font-bold pb-5">{product.productName}</h1>
+            <h2 className="tex-lg font-medium pb-5">{product.productBrand}</h2>
+            <div className="flex gap-4 pb-5">
+            <p>${product.salesPrice}</p>
+            <p className="text-gray-500 line-through">${product.productPrice}</p>
+            </div>
+
+            <button className="bg-orange-600 p-2 mb-5 rounded-lg text-white">Add to cart</button>
+            <p className="">{product.productDescription}</p>
+          </div>
+
+          {/* Product Details Section */}
         </div>
-
-        {/* Thumbnail Section */}
-        <div className="flex flex-wrap gap-4 w-full lg:w-1/2">
-          {product.productImage && product.productImage.length > 0 ? (
-            product.productImage.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={product.productName}
-                className="w-24 h-24 object-cover rounded-lg border border-gray-300 hover:scale-105 transition-transform duration-200"
-              />
-            ))
-          ) : (
-            <p className="text-gray-500">
-              No images available for this product.
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Product Details Section */}
-      <div className="mt-10 lg:mt-12">
-        <h1 className="text-3xl font-bold text-gray-800">
-          {product.productName}
-        </h1>
-        <p className="text-xl text-gray-500 mt-2">{product.productBrand}</p>
-        <p className="text-lg text-gray-600 mt-4">
-          <span className="font-semibold">Category:</span>{" "}
-          {product.productCategory}
-        </p>
-        <p className="text-base text-gray-700 mt-4 leading-relaxed">
-          {product.productDescription}
-        </p>
-        <p className="text-2xl font-bold text-green-600 mt-6">
-          Price: ${product.productPrice}
-        </p>
-
-        {/* Add to Cart Button */}
-        <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300">
-          Add to Cart
-        </button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -36,6 +36,12 @@ export default function Login() {
       console.log("Error: ", error);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  })
 
   return (
     <div className="pt-16">

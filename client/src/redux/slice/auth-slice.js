@@ -30,8 +30,17 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
+    if (response.status === 200 && response.data.success) {
+      const { token } = response.data;
+      const { data } = response.data;
+      if (token) {
+        localStorage.setItem("token", token); //
+        localStorage.setItem("loginData", JSON.stringify(data));
+      }
+    }
     return response.data;
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
@@ -47,12 +56,37 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   }
 });
 
+// export const checkAuth = createAsyncThunk(
+//   "auth/checkAuth",
+//   async (_, thunkApi) => {
+//     try {
+//       const response = await axios.get(
+//         "http://localhost:5000/api/auth/check-auth"
+//       );
+//       return response.data;
+//     } catch (error) {
+//       return thunkApi.rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, thunkApi) => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return thunkApi.rejectWithValue("No token found");
+      }
+
       const response = await axios.get(
-        "http://localhost:5000/api/auth/check-auth"
+        "http://localhost:5000/api/auth/check-auth",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the request header
+          },
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {
@@ -60,6 +94,7 @@ export const checkAuth = createAsyncThunk(
     }
   }
 );
+
 
 export const adminLogin = createAsyncThunk(
   "auth/adminLogin",
@@ -98,9 +133,19 @@ const authSlice = createSlice({
   initialState: {
     data: null,
     isLoading: false,
-    isToken: localStorage.getItem("authToken") || null,
+    isDataToken: JSON.parse(localStorage.getItem("loginData")) || null,
+    isToken: localStorage.getItem("token") || null,
+    isAdminToken: localStorage.getItem("adminToken") || null,
     isAuthenticated: false,
     isError: false,
+  },
+  reducers: {
+    logout1: (state) => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("loginData");
+      state.isAuthenticated = false;
+      state.data = null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
@@ -122,6 +167,8 @@ const authSlice = createSlice({
 
     builder.addCase(login.fulfilled, (state, action) => {
       state.data = action.payload;
+      state.isToken = action.payload;
+      state.isDataToken = action.payload;
       state.isLoading = false;
       state.isError = false;
       state.isAuthenticated = true;
@@ -138,6 +185,7 @@ const authSlice = createSlice({
     });
 
     builder.addCase(logout.fulfilled, (state, action) => {
+      localStorage.removeItem("token");
       state.isAuthenticated = false;
       state.data = null;
       state.isLoading = false;
@@ -173,7 +221,7 @@ const authSlice = createSlice({
 
     builder.addCase(adminLogin.fulfilled, (state, action) => {
       state.data = action.payload;
-      state.isToken = action.payload;
+      state.isAdminToken = action.payload.user;
       state.isLoading = false;
       state.isError = false;
     });
@@ -189,5 +237,7 @@ const authSlice = createSlice({
     });
   },
 });
+
+export const { logout1 } = authSlice.actions;
 
 export default authSlice.reducer;
