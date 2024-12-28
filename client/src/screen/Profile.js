@@ -1,11 +1,20 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/slice/auth-slice";
 
 export default function Profile() {
   const data = JSON.parse(localStorage.getItem("loginData"));
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())
+    console.log("Logged out");
+    
+    navigate("/")
+  }
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -31,6 +40,9 @@ export default function Profile() {
               className="h-full w-full object-cover"
             />
           )}
+        </div>
+        <div>
+          <button onClick={handleLogout} className="bg-yellow-600 px-2 rounded-md text-white py-1 text-sm">Logout</button>
         </div>
         {/* Display user details */}
         <div className="text-center">

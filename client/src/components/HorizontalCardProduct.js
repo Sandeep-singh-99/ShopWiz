@@ -53,7 +53,7 @@ export default function HorizontalCardProduct({ category, heading }) {
               <Link
                 key={product?._id}
                 to={`product/${product?._id}`}
-                className="w-[270px] h-[520px] rounded-lg shadow-lg flex  flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
+                className="w-[270px] h-[520px] rounded-lg shadow-lg flex justify-between  flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
               >
                 <div className="relative w-full h-80">
                   <img
@@ -75,7 +75,7 @@ export default function HorizontalCardProduct({ category, heading }) {
                       ? `$${product.salesPrice.toFixed(2)}`
                       : "Price Unavailable"}
                   </p>
-                  <button className="bg-[#db4444] text-white py-1 mt-2 rounded-lg">
+                  <button className="bg-[#db4444] hover:bg-[#db4411] text-white py-1 mt-2 rounded-lg">
                     Add to cart
                   </button>
                 </div>

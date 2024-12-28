@@ -49,7 +49,10 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
+    axios.defaults.withCredentials = true;
     const response = await axios.get("http://localhost:5000/api/auth/logout");
+    localStorage.removeItem("token");
+    localStorage.removeItem("loginData");
     return response.data;
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
@@ -74,6 +77,7 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, thunkApi) => {
     try {
+      axios.defaults.withCredentials = true;
       const token = localStorage.getItem("token");
       if (!token) {
         return thunkApi.rejectWithValue("No token found");
@@ -139,14 +143,7 @@ const authSlice = createSlice({
     isAuthenticated: false,
     isError: false,
   },
-  reducers: {
-    logout1: (state) => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("loginData");
-      state.isAuthenticated = false;
-      state.data = null;
-    }
-  },
+  
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
       state.data = action.payload;
@@ -185,7 +182,6 @@ const authSlice = createSlice({
     });
 
     builder.addCase(logout.fulfilled, (state, action) => {
-      localStorage.removeItem("token");
       state.isAuthenticated = false;
       state.data = null;
       state.isLoading = false;
@@ -237,7 +233,5 @@ const authSlice = createSlice({
     });
   },
 });
-
-export const { logout1 } = authSlice.actions;
 
 export default authSlice.reducer;

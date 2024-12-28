@@ -5,7 +5,7 @@ import { checkAuth } from "../redux/slice/auth-slice";
 
 export default function Header() {
   const dispatch = useDispatch();
-  const { isAuthenticated, isDataToken } = useSelector((state) => state.auth);
+  const { isAuthenticated, isDataToken, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -16,6 +16,10 @@ export default function Header() {
   useEffect(() => {
     console.log("User data:", isDataToken);
   }, [isDataToken]); // Logs whenever user data is updated
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Optional loader
+  }
   
 
   return (
