@@ -12,7 +12,6 @@ export default function Profile() {
   const handleLogout = () => {
     dispatch(logout())
     console.log("Logged out");
-    
     navigate("/")
   }
 
