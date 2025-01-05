@@ -3,11 +3,19 @@ const Cart = require("../models/cart-model");
 const addToCart = async (req, res) => {
   try {
     const { productId } = req?.body;
-    const currentUser = req.userId;
+    const currentUser = req.user.id; 
 
-    const isProductAvailable = await Cart.findOne({ productId });
+    console.log("current user: ", currentUser);
 
-    console.log("isProductAvailable", isProductAvailable);
+    if (!currentUser) {
+      return res.status(400).json({
+        message: "User not authenticated",
+        success: false,
+      });
+    }
+    
+    // Check if the product is already in the cart for the current user
+    const isProductAvailable = await Cart.findOne({ productId, userId: currentUser });
 
     if (isProductAvailable) {
       return res.status(400).json({
@@ -16,11 +24,14 @@ const addToCart = async (req, res) => {
       });
     }
 
+    // If not in the cart, create a new cart entry
     const payload = {
       productId: productId,
       quantity: 1,
       userId: currentUser,
     };
+
+    console.log("payload: ", payload);
 
     const newAddToCart = await Cart.create(payload);
 
@@ -37,13 +48,23 @@ const addToCart = async (req, res) => {
   }
 };
 
+
 const addToCartViewProduct = async (req, res) => {
   try {
-    const currentUser = req.userId;
+    const currentUser = req.user.id; 
 
     const allProducts = await Cart.find({ userId: currentUser }).populate(
       "productId"
     );
+
+    // Check if the cart is empty
+    if (!allProducts.length) {
+      return res.status(200).json({
+        message: "Your cart is empty.",
+        success: true,
+        data: [],
+      });
+    }
 
     res.status(200).json({
       message: "All products in cart",
@@ -60,10 +81,22 @@ const addToCartViewProduct = async (req, res) => {
 
 const deleteCart = async (req, res) => {
   try {
-    const currentUserId = req.userId;
+    // Use req.user.id instead of req.userId
+    const currentUserId = req.user.id;  // Corrected to req.user.id
     const cartProductId = req.body._id;
 
-    const deleteProduct = await Cart.deleteOne({ _id: cartProductId });
+    // Make sure the user is only deleting their own cart product
+    const deleteProduct = await Cart.deleteOne({ 
+      _id: cartProductId, 
+      userId: currentUserId  // Ensure the product belongs to the current user
+    });
+
+    if (deleteProduct.deletedCount === 0) {
+      return res.status(404).json({
+        message: "Product not found in cart or not owned by the user",
+        success: false,
+      });
+    }
 
     res.status(200).json({
       message: "Product deleted from cart",
@@ -78,9 +111,10 @@ const deleteCart = async (req, res) => {
   }
 };
 
+
 const updateCartProduct = async (req, res) => {
     try {
-      const currentUserId = req.userId; // Assuming userId is added via middleware
+      const currentUserId = req.user.id;  // Assuming userId is added via middleware
       const cartProductId = req.body._id;
       const quantity = req.body.quantity;
   
@@ -114,7 +148,8 @@ const updateCartProduct = async (req, res) => {
 
 const countAddToCartProduct = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
+
 
     const count = await Cart.countDocuments({ userId });
 
