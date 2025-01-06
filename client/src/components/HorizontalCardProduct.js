@@ -28,7 +28,7 @@ export default function HorizontalCardProduct({ category, heading }) {
   }, [category]);
 
   return (
-    <div className="container mx-auto border-2 px-4 py-4 my-8 relative">
+    <div className="container mx-auto  px-4 py-4 my-8 relative">
       {/* Section Heading */}
 
       <div className="flex items-center gap-3 pb-4">
@@ -53,13 +53,13 @@ export default function HorizontalCardProduct({ category, heading }) {
               <Link
                 key={product?._id}
                 to={`product/${product?._id}`}
-                className="w-[270px] h-[520px] rounded-lg shadow-lg flex justify-between  flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
+                className="w-[270px] h-[380px] rounded-lg shadow-md flex justify-stretch  flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
               >
-                <div className="relative w-full h-80">
+                <div className="relative w-full h-52">
                   <img
                     src={product?.productImage?.[0] || "/placeholder-image.png"}
                     alt={product?.name || "Product Image"}
-                    className="w-full h-80 mix-blend-multiply object-contain rounded-md"
+                    className="w-full h-52 mix-blend-multiply object-contain rounded-md"
                   />
                 </div>
                 <div className="flex flex-col mt-4 space-y-2 overflow-hidden">
