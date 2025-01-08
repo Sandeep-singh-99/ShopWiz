@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/slice/auth-slice";

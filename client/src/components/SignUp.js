@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { register } from "../redux/slice/auth-slice";
 

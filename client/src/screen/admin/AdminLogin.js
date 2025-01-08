@@ -3,7 +3,6 @@ import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { adminLogin } from "../../redux/slice/auth-slice";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function AdminLogin() {
   const dispatch = useDispatch();

@@ -13,6 +13,10 @@ export default function CartPage() {
     }
   })
   return (
-    <div>cart</div>
+    <div className='border-2 rounded-md px-20 py-10 shadow-2xl mx-20 my-10'>
+      <div>
+        <h1 className='text-4xl font-semibold'>Shopping Cart</h1>
+      </div>
+    </div>
   )
 }

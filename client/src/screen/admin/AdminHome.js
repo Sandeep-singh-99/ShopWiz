@@ -5,7 +5,6 @@ import TabPane from "antd/es/tabs/TabPane";
 import Product from "./Product";
 import User from "./User";
 import Order from "./Order";
-import axios from "axios";
 
 export default function AdminHome() {
   const [mode, setMode] = useState("left");
