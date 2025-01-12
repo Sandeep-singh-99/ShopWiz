@@ -9,7 +9,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { cartItems } = useSelector((state) => state.cart);
+  const  { cartItems }  = useSelector((state) => state.cart);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -31,7 +31,7 @@ export default function CartPage() {
                 <img
                   src={item.productId.productImage[0]}
                   alt={item.productId.productName}
-                  className="w-40 bg-[#f7f7f7] h-40 rounded-md border"
+                  className="w-40 bg-[#f7f7f7] h-40 object-contain rounded-md border"
                 />
                 <div className="flex-auto flex flex-col justify-between">
                   <div>

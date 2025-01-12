@@ -100,6 +100,7 @@ const cartSlice = createSlice({
     cartItems: [],
     isLoading: false,
     error: null,
+    data: null,
     countData: 0,
   },
 
@@ -115,7 +116,7 @@ const cartSlice = createSlice({
 
     builder.addCase(addCart.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cartItems = action.payload;
+      state.data = action.payload;
     });
 
     builder.addCase(countCartProduct.pending, (state, action) => {
@@ -130,6 +131,20 @@ const cartSlice = createSlice({
     builder.addCase(countCartProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.countData = action.payload;
+    })
+
+    builder.addCase(getToCart.pending, (state, action) => {
+        state.isLoading = true;
+    })
+
+    builder.addCase(getToCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+    })
+
+    builder.addCase(getToCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload.data;
     })
 
     // Reset countData when the user logout
