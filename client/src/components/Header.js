@@ -2,23 +2,32 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { checkAuth } from "../redux/slice/auth-slice";
+import { countCartProduct } from "../redux/slice/cart-slice";
 
 export default function Header() {
   const dispatch = useDispatch();
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
 
+  const { countData } = useSelector((state) => state.cart);
+
   // Parse login data from localStorage
   const data = JSON.parse(localStorage.getItem("loginData"));
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (isAuthenticated) {
       dispatch(checkAuth());
+      dispatch(countCartProduct());
+    } else {
+      localStorage.removeItem("loginData");
+      localStorage.removeItem("token");
     }
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     console.log("User data from localStorage:", data);
-  }, [data]); // Logs whenever localStorage data is updated
+    console.log("Count data:", countData);
+  }, [data, countData]); // Logs whenever localStorage data or countData is updated
+
 
   if (isLoading) {
     return <div>Loading...</div>; // Optional loader
@@ -36,7 +45,7 @@ export default function Header() {
             <div className="relative py-2">
               <div className="t-0 absolute left-3">
                 <p className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
-                  3
+                {typeof countData === 'number' ? countData : countData?.data || 0} 
                 </p>
               </div>
               <svg

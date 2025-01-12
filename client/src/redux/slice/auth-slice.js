@@ -59,19 +59,6 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   }
 });
 
-// export const checkAuth = createAsyncThunk(
-//   "auth/checkAuth",
-//   async (_, thunkApi) => {
-//     try {
-//       const response = await axios.get(
-//         "http://localhost:5000/api/auth/check-auth"
-//       );
-//       return response.data;
-//     } catch (error) {
-//       return thunkApi.rejectWithValue(error.response.data);
-//     }
-//   }
-// );
 
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",

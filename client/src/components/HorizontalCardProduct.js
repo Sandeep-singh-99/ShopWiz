@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import useAddToCart from "../helpers/useAddToCart";
 
 export default function HorizontalCardProduct({ category, heading }) {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+
+  const addToCart = useAddToCart();
 
   const fetchData = async () => {
     try {
@@ -75,7 +78,7 @@ export default function HorizontalCardProduct({ category, heading }) {
                       ? `$${product.salesPrice.toFixed(2)}`
                       : "Price Unavailable"}
                   </p>
-                  <button className="bg-[#db4444] hover:bg-[#db4411] text-white py-1 mt-2 rounded-lg">
+                  <button onClick={(e) => { e.preventDefault(); addToCart(product?._id); }} className="bg-[#db4444] hover:bg-[#db4411] text-white py-1 mt-2 rounded-lg">
                     Add to cart
                   </button>
                 </div>

@@ -3,6 +3,7 @@ import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { register } from "../redux/slice/auth-slice";
+import { message } from "antd";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -50,20 +51,11 @@ export default function Register() {
 
     try {
       dispatch(register(data))
-      // const response = await axios.post(
-      //   "http://localhost:5000/api/auth/register",
-      //   data,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
       navigate("/login");
-      alert("Registration successful");
+      message.success("Registration successful");
       // Handle successful registration
     } catch (error) {
-      alert("Registration failed");
+      message.error("Registration failed");
       // Handle registration errors
     }
   };
