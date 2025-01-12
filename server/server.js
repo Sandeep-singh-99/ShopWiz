@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const rateLimit = require('express-rate-limit')
 
 const PORT = process.env.PORT || 5001
 const ConnectDB = require('./config/db')
@@ -11,6 +12,19 @@ const productRouter = require('./router/product-router')
 const cartRouter = require('./router/cart-router')
 const categoryRouter = require('./router/category-router')
 
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: {
+        status: 429,
+        message: "Too many requests from this IP, please try again after 15 minutes"
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+})
+
+app.use(limiter)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
