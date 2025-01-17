@@ -63,33 +63,37 @@ export const deleteCartProduct = createAsyncThunk(
   async (id, thunkApi) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/cart/delete-cart-product/${id}`,
+        "http://localhost:5000/api/cart/delete-cart-product",
         {
+          data: { _id: id }, // Send the `id` in the request body
+          headers: {
+            "Content-Type": "application/json",
+          },
           withCredentials: true,
         }
       );
 
       return response.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data);
+      return thunkApi.rejectWithValue(error.response?.data || "Unknown error");
     }
   }
 );
 
 export const updateToCartProduct = createAsyncThunk(
   "cart/updateToCartProduct",
-  async (id, quantity, thunkApi) => {
+  async ({ _id, quantity }, thunkApi) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/cart/update-cart-product/${id}`,
-        quantity,
+        `http://localhost:5000/api/cart/update-cart-product`,
+        { _id, quantity }, // Send both the ID and new quantity in the body
         {
           withCredentials: true,
         }
       );
       return response.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data);
+      return thunkApi.rejectWithValue(error.response?.data || "Unknown error");
     }
   }
 );
@@ -102,6 +106,11 @@ const cartSlice = createSlice({
     error: null,
     data: null,
     countData: 0,
+  },
+  reducers: {
+    restartCartCount: (state) => {
+      state.countData = 0;
+    },
   },
 
   extraReducers: (builder) => {
@@ -120,39 +129,88 @@ const cartSlice = createSlice({
     });
 
     builder.addCase(countCartProduct.pending, (state, action) => {
-        state.isLoading = true;
-    })
+      state.isLoading = true;
+    });
 
     builder.addCase(countCartProduct.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-    })
+      state.isLoading = false;
+      state.error = action.payload;
+    });
 
     builder.addCase(countCartProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.countData = action.payload;
-    })
+      state.isLoading = false;
+      state.countData = action.payload;
+    });
 
     builder.addCase(getToCart.pending, (state, action) => {
-        state.isLoading = true;
-    })
+      state.isLoading = true;
+    });
 
     builder.addCase(getToCart.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-    })
+      state.isLoading = false;
+      state.error = action.payload;
+    });
 
     builder.addCase(getToCart.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.cartItems = action.payload.data;
-    })
+      state.isLoading = false;
+      state.cartItems = action.payload.data;
+    });
+
+    builder.addCase(deleteCartProduct.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(deleteCartProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    builder.addCase(deleteCartProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+
+      // Remove the deleted product from the cartItems
+      state.cartItems = state.cartItems.filter(
+        (item) => item._id !== action.meta.arg // `action.meta.arg` contains the `id` passed to the thunk
+      );
+    });
 
     // Reset countData when the user logout
     builder.addCase(logout.fulfilled, (state, action) => {
-        state.countData = 0;
-        state.cartItems = [];
-    })
+      state.countData = 0;
+      state.cartItems = [];
+    });
+
+    builder.addCase(updateToCartProduct.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(updateToCartProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      // state.cartItems = state.cartItems.map(item =>
+      //   item._id === action.payload.data._id
+      //     ? { ...item, quantity: action.payload.data.quantity } // Update the quantity of the updated item
+      //     : item
+      // );
+
+      // Check if the payload structure is correct
+      const updatedItem = action.payload.data || action.payload;
+
+      // Map through cartItems and update the item quantity if the _id matches
+      state.cartItems = state.cartItems.map((item) =>
+        item._id === updatedItem._id
+          ? { ...item, quantity: updatedItem.quantity } // Update quantity
+          : item
+      );
+    });
+
+    builder.addCase(updateToCartProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
+
+export const { restartCartCount } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -2,14 +2,48 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getToCart } from "../redux/slice/cart-slice";
-
+import {
+  countCartProduct,
+  deleteCartProduct,
+  getToCart,
+  updateToCartProduct,
+} from "../redux/slice/cart-slice";
 
 export default function CartPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const  { cartItems }  = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const handleDelete = async (id) => {
+    console.log("Deleting item with ID:", id);
+    try {
+      const resultAction = await dispatch(deleteCartProduct(id));
+      console.log("resultAction", resultAction);
+
+      if (deleteCartProduct.fulfilled.match(resultAction)) {
+        message.success("Item removed from cart");
+        await dispatch(countCartProduct());
+      } else {
+        throw new Error(resultAction.requestStatus || "Failed to delete item");
+      }
+    } catch (error) {
+      message.error(error.message || "Something went wrong");
+    }
+  };
+
+  const handleQuantityChange = async (id, quantity) => {
+    try {
+      const resultAction = await dispatch(updateToCartProduct({ _id: id, quantity }));
+      if (updateToCartProduct.fulfilled.match(resultAction)) {
+        message.success("Cart updated successfully");
+      } else {
+        throw new Error(resultAction.requestStatus || "Failed to update cart");
+      }
+    } catch (error) {
+      message.error(error.message || "Something went wrong");
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -64,8 +98,16 @@ export default function CartPage() {
                   </div>
                 </div>
                 <div className="flex flex-col justify-between gap-10">
-                  <button className="text-red-500 mt-2">×</button>
-                  <select className="border outline-none rounded-md p-1" value={item.quantity}>
+                  <button onClick={() => handleDelete(item._id)}>
+                    <i class="ri-delete-bin-6-line"></i>
+                  </button>
+                  <select
+                    className="border outline-none rounded-md p-1"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(item._id, parseInt(e.target.value))
+                    }
+                  >
                     {[...Array(10).keys()].map((num) => (
                       <option key={num + 1} value={num + 1}>
                         {num + 1}
@@ -83,7 +125,13 @@ export default function CartPage() {
           <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
           <div className="flex justify-between py-2 text-gray-700">
             <span>Subtotal</span>
-            <span>₹{cartItems.reduce((sum, item) => sum + item.productId.salesPrice * item.quantity, 0)}</span>
+            <span>
+              ₹
+              {cartItems.reduce(
+                (sum, item) => sum + item.productId.salesPrice * item.quantity,
+                0
+              )}
+            </span>
           </div>
           {/* Add shipping and tax calculation if needed */}
           <div className="flex justify-between py-4 text-lg font-semibold">

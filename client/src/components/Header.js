@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { checkAuth } from "../redux/slice/auth-slice";
-import { countCartProduct } from "../redux/slice/cart-slice";
+import { countCartProduct, restartCartCount } from "../redux/slice/cart-slice";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ export default function Header() {
     } else {
       localStorage.removeItem("loginData");
       localStorage.removeItem("token");
+      dispatch(restartCartCount())
     }
   }, [dispatch, isAuthenticated]);
 

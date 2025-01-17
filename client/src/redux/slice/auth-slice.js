@@ -127,7 +127,7 @@ const authSlice = createSlice({
     isDataToken: JSON.parse(localStorage.getItem("loginData")) || null,
     isToken: localStorage.getItem("token") || null,
     isAdminToken: localStorage.getItem("adminToken") || null,
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem("token"),
     isError: false,
   },
   
@@ -200,6 +200,7 @@ const authSlice = createSlice({
     builder.addCase(checkAuth.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
+      state.isAuthenticated = false;
     });
 
     builder.addCase(adminLogin.fulfilled, (state, action) => {
