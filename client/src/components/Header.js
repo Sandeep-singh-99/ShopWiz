@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { checkAuth } from "../redux/slice/auth-slice";
-import { countCartProduct, restartCartCount } from "../redux/slice/cart-slice";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const dispatch = useDispatch();
+ 
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
 
   const { countData } = useSelector((state) => state.cart);
@@ -13,16 +11,7 @@ export default function Header() {
   // Parse login data from localStorage
   const data = JSON.parse(localStorage.getItem("loginData"));
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(checkAuth());
-      dispatch(countCartProduct());
-    } else {
-      localStorage.removeItem("loginData");
-      localStorage.removeItem("token");
-      dispatch(restartCartCount())
-    }
-  }, [dispatch, isAuthenticated]);
+ 
 
   useEffect(() => {
     console.log("User data from localStorage:", data);
