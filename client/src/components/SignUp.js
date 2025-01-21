@@ -65,7 +65,7 @@ export default function Register() {
     <div className="sm:pt-16 pt-10">
       <div className="flex sm:justify-between justify-center">
         <div className="bg-[#c6e5e9] sm:block hidden">
-          <img className="w-5/6" src={img1} alt="img1" />
+          <img className="w-5/6" src={img1} alt="img1" loading="lazy" />
         </div>
 
         <div className="flex sm:w-2/4 w-3/4 shadow-2xl rounded-xl sm:shadow-none sm:rounded-none flex-col text-center justify-center items-center">

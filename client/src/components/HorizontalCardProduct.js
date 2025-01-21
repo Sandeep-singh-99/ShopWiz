@@ -40,12 +40,12 @@ export default function HorizontalCardProduct({ category, heading }) {
       </div>
 
       {/* Product List */}
-      <div className="flex items-center gap-6  overflow-hidden whitespace-nowrap scrollbar-hide transition-all">
+      <div className="flex items-center gap-6  whitespace-nowrap Scrollbar-hide overflow-hidden overflow-x-auto transition-all">
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}
-                className="w-[280px] h-[420px] bg-red-800 rounded-lg shadow-lg animate-pulse flex flex-col p-4"
+                className="w-[280px] h-[420px] rounded-lg shadow-lg animate-pulse flex flex-col p-4"
               >
                 <div className="h-80 bg-gray-300 rounded-md mb-4"></div>
                 <div className="h-10 bg-gray-300 rounded-md mb-2"></div>
@@ -62,6 +62,7 @@ export default function HorizontalCardProduct({ category, heading }) {
                   <img
                     src={product?.productImage?.[0] || "/placeholder-image.png"}
                     alt={product?.name || "Product Image"}
+                    loading="lazy"
                     className="w-full h-52 mix-blend-multiply object-contain rounded-md"
                   />
                 </div>

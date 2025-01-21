@@ -95,6 +95,7 @@ export default function HorizontalCategory() {
           >
             <div className="flex justify-center items-center w-20 h-20 rounded-full bg-[#e1e8f0]">
               <img
+              loading="lazy"
                 className="h-12 transition-all duration-100 ease-in-out object-contain mix-blend-multiply hover:scale-125"
                 src={item.img}
                 alt={item.name}

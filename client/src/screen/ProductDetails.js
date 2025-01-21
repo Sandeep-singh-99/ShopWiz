@@ -40,6 +40,7 @@ export default function ProductDetails() {
           <div className="w-full md:w-1/2 px-4 mb-8">
             <img
               src={product.productImage && product.productImage[0]}
+              loading="lazy"
               alt={product.productName || "Product Image"}
               className="w-full h-96 object-contain mix-blend-multiply rounded-lg shadow-md mb-4"
             />
@@ -50,6 +51,7 @@ export default function ProductDetails() {
                   <img
                     key={index}
                     src={img}
+                    loading="lazy"
                     alt={product.productName}
                     className="size-16 sm:size-20 object-contain rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
                   />
