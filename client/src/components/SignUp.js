@@ -62,16 +62,16 @@ export default function Register() {
 
   // ... rest of your component rendering logic
   return (
-    <div className="pt-16">
-      <div className="flex justify-between">
-        <div className="bg-[#c6e5e9]">
+    <div className="sm:pt-16 pt-10">
+      <div className="flex sm:justify-between justify-center">
+        <div className="bg-[#c6e5e9] sm:block hidden">
           <img className="w-5/6" src={img1} alt="img1" />
         </div>
 
-        <div className="flex w-2/4 flex-col justify-center items-center">
-          <div className="w-1/2">
-            <h1 className="text-4xl font-semibold mb-3">Create an account</h1>
-            <h2 className="text-lg">Enter your details below</h2>
+        <div className="flex sm:w-2/4 w-3/4 shadow-2xl rounded-xl sm:shadow-none sm:rounded-none flex-col text-center justify-center items-center">
+          <div className="sm:w-1/2 w-10/12 py-5">
+            <h1 className="sm:text-4xl text-2xl sm:font-semibold font-bold mb-3">Create an account</h1>
+            <h2 className="sm:text-lg text-sm">Enter your details below</h2>
 
             <form onSubmit={handleSubmit} className="mt-7">
               <div className="mb-5 flex justify-center">

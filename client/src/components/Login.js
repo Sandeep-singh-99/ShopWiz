@@ -28,7 +28,7 @@ export default function Login() {
     data.append("password", formData.password);
     try {
       dispatch(login(data));
-      navigate("/") // Redirect to home page
+      navigate("/"); // Redirect to home page
 
       alert("Logged in successfully");
     } catch (error) {
@@ -41,19 +41,21 @@ export default function Login() {
     if (localStorage.getItem("token")) {
       navigate("/");
     }
-  })
+  });
 
   return (
-    <div className="pt-16">
-      <div className="flex justify-between">
-        <div className="bg-[#c6e5e9]">
+    <div className="sm:pt-16 pt-5">
+      <div className="flex sm:justify-between justify-center items-center">
+        <div className="bg-[#c6e5e9] sm:block hidden">
           <img className="w-5/6" src={img1} alt="img1" />
         </div>
 
-        <div className="flex w-2/4 flex-col justify-center items-center">
-          <div className="w-1/2">
-            <h1 className="text-4xl font-semibold mb-3">Log in to ShopWiz</h1>
-            <h2 className="text-lg">Enter your details below</h2>
+        <div className="flex sm:w-2/4 w-3/4 shadow-2xl rounded-md sm:shadow-none sm:rounded-none flex-col justify-center items-center">
+          <div className="sm:w-1/2 w-10/12 py-10">
+            <h1 className="sm:text-4xl text-3xl font-bold sm:font-semibold mb-3">
+              Log in to ShopWiz
+            </h1>
+            <h2 className="sm:text-lg text-sm">Enter your details below</h2>
 
             <form className="mt-7" onSubmit={handleSubmit}>
               <div className="mb-5">
