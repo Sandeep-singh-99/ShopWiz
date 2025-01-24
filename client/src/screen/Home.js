@@ -9,7 +9,7 @@ import { message } from "antd";
 
 export default function Home() {
   const dispatch = useDispatch();
-  // const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   
   useEffect(() => {
     const clearUserData = () => {
@@ -27,15 +27,30 @@ export default function Home() {
           await dispatch(restartCartCount());
         }
       } catch (error) {
-        // message.error("Authentication failed. Please log in again.");
-        clearUserData();
+         message.error("Authentication failed. Please log in again.");
+        // clearUserData();
         await dispatch(restartCartCount());
       }
     };
   
     authenticateAndFetchData();
   }, [dispatch]);
-  
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //    dispatch(checkAuth())
+  //       .unwrap()
+  //       .then((res) => {
+  //         dispatch(countCartProduct());
+  //       })
+  //       .catch((error) => {
+  //         message.error("Authentication failed. Please log in again.");
+  //         localStorage.removeItem("token");
+  //         localStorage.removeItem("loginData");
+  //         dispatch(restartCartCount());
+  //       });
+  //   }
+  // })
   return (
     <div className="px-4 md:px-20 py-5">
       <div className="flex flex-col gap-5">

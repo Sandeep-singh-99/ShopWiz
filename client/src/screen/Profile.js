@@ -15,47 +15,43 @@ export default function Profile() {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/");
-    }
-  });
+  // useEffect(() => {
+  //   if (!localStorage.getItem("token")) {
+  //     navigate("/");
+  //   }
+  // });
   return (
-    // <div className="flex flex-col items-center mt-10">
-    //   <h1 className="text-2xl font-bold mb-5">User Profile</h1>
-    //   <div className="flex flex-col items-center gap-5">
-    //     {/* Display user profile image */}
-    //     <div className="h-32 w-32 rounded-full overflow-hidden">
-    //       {data?.imageUrl ? (
-    //         <img
-    //           src={data.imageUrl}
-    //           alt={data?.username || "Profile"}
-    //           className="h-full w-full object-contain"
-    //         />
-    //       ) : (
-    //         <img
-    //           src={img1}
-    //           alt="Default"
-    //           className="h-full w-full object-cover"
-    //         />
-    //       )}
-    //     </div>
-    //     <div>
-    //       <button onClick={handleLogout} className="bg-yellow-600 px-2 rounded-md text-white py-1 text-sm">Logout</button>
-    //     </div>
-    //     {/* Display user details */}
-    //     <div className="text-center">
-    //       <h2 className="text-xl font-semibold">{data?.username || "N/A"}</h2>
-    //       <p className="text-gray-500">{data?.email || "Email not available"}</p>
-    //       <p className="text-gray-500">{data?.phone || "Phone not available"}</p>
-    //     </div>
-    //   </div>
-    // </div>
+    <div className="flex py-28">
+      <div className="flex justify-evenly w-full">
+        <div className="flex flex-col justify-center items-center gap-2 bg-blue-400 shadow-2xl rounded-lg p-5">
+          <h1>Sandeep Singh</h1>
+          <h1>sk3356337@gmail.com</h1>
+          <p>9651869780</p>
 
-    <div className="flex justify-center items-center ">
-      <div className="">
-        <div>
-          <button onClick={handleLogout}>Logout</button>
+          <button className="w-full bg-purple-500 text-white rounded-lg py-1">Logout</button>
+        </div>
+
+        <div className="flex flex-col gap-5 items-center">
+          <div className="shadow-2xl rounded-lg p-2 bg-blue-700 w-56">
+            <h1>Cart</h1>
+            <div className="border-2"></div>
+            <div className="flex justify-between">
+              <h1>Total Cart</h1>
+              <h1>Total</h1>
+            </div>
+
+            <button className="w-full bg-purple-500 text-white rounded-lg py-1">View Cart</button>
+          </div>
+          <div className="shadow-2xl rounded-lg p-2 bg-blue-700 w-56">
+            <h1>Cart</h1>
+            <div className="border-2"></div>
+            <div className="flex justify-between">
+              <h1>Total Cart</h1>
+              <h1>Total</h1>
+            </div>
+
+            <button className="w-full bg-purple-500 text-white rounded-lg py-1">View Cart</button>
+          </div>
         </div>
       </div>
     </div>
