@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../redux/slice/category-slice";
 import { fetchProduct } from "../redux/slice/product-slice";
+import useAddToCart from "../helpers/useAddToCart";
 
 export default function CategoryProduct() {
   const { categoryName } = useParams(); // Capture the categoryName from URL
@@ -83,6 +84,8 @@ export default function CategoryProduct() {
     { id: 11, name: "Trimmers" },
     { id: 12, name: "Watches" },
   ];
+
+  const addToCart = useAddToCart();
 
   return (
     <div className="container mx-auto p-4">
@@ -174,7 +177,7 @@ export default function CategoryProduct() {
                           {product.productPrice}
                         </p>
                       </div>
-                      <button className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full">
+                      <button onClick={(e) => { e.preventDefault(); addToCart(product?._id); }} className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full">
                         Add to Cart
                       </button>
                     </div>

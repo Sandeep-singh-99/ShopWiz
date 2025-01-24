@@ -36,21 +36,7 @@ export default function Home() {
     authenticateAndFetchData();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //    dispatch(checkAuth())
-  //       .unwrap()
-  //       .then((res) => {
-  //         dispatch(countCartProduct());
-  //       })
-  //       .catch((error) => {
-  //         message.error("Authentication failed. Please log in again.");
-  //         localStorage.removeItem("token");
-  //         localStorage.removeItem("loginData");
-  //         dispatch(restartCartCount());
-  //       });
-  //   }
-  // })
+ 
   return (
     <div className="px-4 md:px-20 py-5">
       <div className="flex flex-col gap-5">
