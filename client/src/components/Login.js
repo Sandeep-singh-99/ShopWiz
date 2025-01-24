@@ -21,21 +21,57 @@ export default function Login() {
   };
 
   // Handle form submission
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const data = new FormData();
+  //   data.append("email", formData.email);
+  //   data.append("password", formData.password);
+  //   console.log("Data: ", data);
+
+  //   if (!formData.email || !formData.password) {
+  //     alert("Please fill in all fields.");
+  //     return;
+  //   }
+  //   try {
+  //     console.log("Data12: ", data);
+      
+  //     dispatch(login(data));
+  //     navigate("/"); // Redirect to home page
+
+  //     alert("Logged in successfully");
+  //   } catch (error) {
+  //     alert("Error logging in");
+  //     console.log("Error: ", error);
+  //   }
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("email", formData.email);
-    data.append("password", formData.password);
+    
+    if (!formData.email || !formData.password) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  
+    const data = {
+      email: formData.email,
+      password: formData.password,
+    };
+  
+    console.log("Form Data before dispatch: ", data);
+  
     try {
-      dispatch(login(data));
+      // Dispatch login action
+      dispatch(login(data)); 
       navigate("/"); // Redirect to home page
-
+  
       alert("Logged in successfully");
     } catch (error) {
       alert("Error logging in");
       console.log("Error: ", error);
     }
   };
+  
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

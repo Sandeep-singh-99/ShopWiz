@@ -55,7 +55,7 @@ export default function Profile() {
     <div className="flex justify-center items-center ">
       <div className="">
         <div>
-          <h1>Profile</h1>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>

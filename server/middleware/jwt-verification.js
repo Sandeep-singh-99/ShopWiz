@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = async (req, res, next) => {
-  const token = req.cookies.accesstoken
-
-  if (!token) {
+  const Token = req.cookies.accesstoken
+  console.log("Request cookies: ", req.cookies);
+  if (!Token) {
     const renewed = await renewToken(req, res);
     if (renewed) {
       next(); // Proceed to the next middleware if the token was successfully renewed
@@ -12,7 +12,7 @@ const verifyToken = async (req, res, next) => {
     }
   } else {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(Token, process.env.JWT_SECRET);
       req.user = decoded;
       next(); // Proceed if the token is valid
     } catch (error) {
@@ -35,7 +35,7 @@ const renewToken = async (req, res) => {
       expiresIn: "30m",
     });
 
-    res.cookie("token", accesstoken, {
+    res.cookie("accesstoken", accesstoken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",

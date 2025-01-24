@@ -13,6 +13,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
+  
   const { cartItems } = useSelector((state) => state.cart);
 
   const handleDelete = async (id) => {
@@ -46,13 +47,21 @@ export default function CartPage() {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      message.error("Please login to view your cart");
-      navigate("/");
-    } else {
-      dispatch(getToCart());
-    }
+    const fetchCart = async () => {
+      if (!isAuthenticated) {
+        message.error("Please login to view your cart");
+        navigate("/");
+        return;
+      }
+      try {
+        await dispatch(getToCart());
+      } catch (error) {
+        message.error("Failed to fetch cart items");
+      }
+    };
+    fetchCart();
   }, [isAuthenticated, dispatch, navigate]);
+  
 
   return (
     <div className="max-w-5xl mx-auto my-10 p-5">

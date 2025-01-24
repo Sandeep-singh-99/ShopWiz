@@ -8,8 +8,7 @@ import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: 'root', // Key for the persisted state
-  storage,
-  // Specify which reducers to persist (in this case, only cart)
+  storage // Specify which reducers to persist (in this case, only cart)
 };
 
 const persistedReducer = persistReducer(persistConfig, 

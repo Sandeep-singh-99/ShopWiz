@@ -76,7 +76,7 @@ const Login = async (req, res) => {
         res.status(200).json({
             message: "User logged in successfully",
             success: true,
-            data: user,
+            data: {user, accesstoken }
         })
     } catch (error) {
         res.status(500).json({
@@ -90,6 +90,7 @@ const Logout = async (req, res) => {
     try {
         res.clearCookie("accesstoken");
         res.clearCookie("refreshtoken");
+        res.clearCookie("token")
         res.status(200).json({
             message: "User logged out successfully",
             success: true,

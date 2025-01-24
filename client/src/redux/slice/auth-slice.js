@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// axios.defaults.withCredentials = true;
+
 export const register = createAsyncThunk(
   "auth/register",
   async (data, thunkApi) => {
@@ -22,6 +24,7 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
+  axios.defaults.withCredentials = true;
   try {
     const response = await axios.post(
       "http://localhost:5000/api/auth/login",
@@ -34,11 +37,11 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
       }
     );
     if (response.status === 200 && response.data.success) {
-      const { token } = response.data;
-      const { data } = response.data;
-      if (token) {
-        localStorage.setItem("token", token); //
-        localStorage.setItem("loginData", JSON.stringify(data));
+      const { data: userData } = response.data; 
+      if (userData) {
+        
+        localStorage.setItem("token", userData.accesstoken); 
+        localStorage.setItem("loginData", JSON.stringify(userData.user));
       }
     }
     return response.data;
@@ -59,23 +62,22 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   }
 });
 
-
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, thunkApi) => {
     try {
       axios.defaults.withCredentials = true;
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return thunkApi.rejectWithValue("No token found");
-      }
+      // const token = localStorage.getItem("token");
+      // if (!token) {
+      //   return thunkApi.rejectWithValue("No token found");
+      // }
 
       const response = await axios.get(
         "http://localhost:5000/api/auth/check-auth",
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the request header
-          },
+          // headers: {
+          //   Authorization: `Bearer ${token}`, // Include the token in the request header
+          // },
           withCredentials: true,
         }
       );
@@ -85,7 +87,6 @@ export const checkAuth = createAsyncThunk(
     }
   }
 );
-
 
 export const adminLogin = createAsyncThunk(
   "auth/adminLogin",
@@ -125,18 +126,18 @@ const authSlice = createSlice({
     data: null,
     isLoading: false,
     isDataToken: JSON.parse(localStorage.getItem("loginData")) || null,
-    isToken: localStorage.getItem("token") || null,
+    // isToken: localStorage.getItem("token") || null,
     isAdminToken: localStorage.getItem("adminToken") || null,
     isAuthenticated: !!localStorage.getItem("token"),
     isError: false,
   },
-  
+
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
       state.data = action.payload;
       state.isLoading = false;
       state.isError = false;
-      state.isAuthenticated = true;
+     
     });
 
     builder.addCase(register.pending, (state, action) => {
@@ -151,7 +152,7 @@ const authSlice = createSlice({
 
     builder.addCase(login.fulfilled, (state, action) => {
       state.data = action.payload;
-      state.isToken = action.payload;
+      
       state.isDataToken = action.payload;
       state.isLoading = false;
       state.isError = false;
@@ -173,6 +174,8 @@ const authSlice = createSlice({
       state.data = null;
       state.isLoading = false;
       state.isError = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("loginData");
     });
 
     builder.addCase(logout.pending, (state, action) => {

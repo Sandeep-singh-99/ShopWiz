@@ -5,21 +5,37 @@ import HorizontalCardProduct from "../components/HorizontalCardProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../redux/slice/auth-slice";
 import { countCartProduct, restartCartCount } from "../redux/slice/cart-slice";
+import { message } from "antd";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  // const { isAuthenticated } = useSelector((state) => state.auth);
   
   useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(checkAuth());
-      dispatch(countCartProduct());
-    } else {
-      localStorage.removeItem("loginData");
+    const clearUserData = () => {
       localStorage.removeItem("token");
-      dispatch(restartCartCount());
-    }
-  }, [dispatch, isAuthenticated]);
+      localStorage.removeItem("loginData");
+    };
+  
+    const authenticateAndFetchData = async () => {
+      try {
+        const isAuthenticatedUser = await dispatch(checkAuth()).unwrap();
+        if (isAuthenticatedUser) {
+          await dispatch(countCartProduct());
+        } else {
+          clearUserData();
+          await dispatch(restartCartCount());
+        }
+      } catch (error) {
+        // message.error("Authentication failed. Please log in again.");
+        clearUserData();
+        await dispatch(restartCartCount());
+      }
+    };
+  
+    authenticateAndFetchData();
+  }, [dispatch]);
+  
   return (
     <div className="px-4 md:px-20 py-5">
       <div className="flex flex-col gap-5">
