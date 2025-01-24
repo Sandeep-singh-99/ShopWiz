@@ -1,20 +1,51 @@
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-    console.log("Received token:", token);
+const verifyToken = async (req, res, next) => {
+  const token = req.cookies.accesstoken
 
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+  if (!token) {
+    const renewed = await renewToken(req, res);
+    if (renewed) {
+      next(); // Proceed to the next middleware if the token was successfully renewed
+    } else {
+      return; // Stop further execution if renewToken sends a response
     }
+  } else {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next(); // Proceed if the token is valid
+    } catch (error) {
+      return res.status(401).json({ message: "Unauthorized", success: false }); // Send a response if token is invalid
+    }
+  }
+};
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
+const renewToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshtoken;
+
+  if (!refreshToken) {
+    res.status(401).json({ message: "Unauthorized", success: false });
+    return false; // Explicitly return false to stop further execution
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+    const accesstoken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
+      expiresIn: "30m",
+    });
+
+    res.cookie("token", accesstoken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 1800000,
+    });
+
+    return true; // Token successfully renewed
   } catch (error) {
-    console.error("JWT Verification Error:", error.message); // Log the error for debugging
-    return res.status(402).json({ message: "Unauthorized Access" });
+    res.status(401).json({ message: "Unauthorized", success: false });
+    return false; // Explicitly return false to stop further execution
   }
 };
 

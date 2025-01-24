@@ -19,14 +19,6 @@ const register = async (req, res) => {
 
         const user = await Auth.create({ email, password, username, phone, imageUrl, cloudinaryId });
 
-        const token = user.generateToken();
-
-        res.cookie("token", token,  {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 3600000,
-        })
 
         res.status(200).json({
             message: "User created successfully",
@@ -64,19 +56,26 @@ const Login = async (req, res) => {
             })
         }
 
-        const token = user.generateToken()
+        const accesstoken = user.generateToken()
+        const refreshtoken = user.RefreshGenerateToken()
 
-        res.cookie("token", token, {
+        res.cookie("accesstoken", accesstoken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
-            maxAge: 3600000,
+            maxAge: 1800000, // 1 hour
+        })
+
+        res.cookie("refreshtoken", refreshtoken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 604800000,
         })
 
         res.status(200).json({
             message: "User logged in successfully",
             success: true,
-            token,
             data: user,
         })
     } catch (error) {
@@ -89,7 +88,8 @@ const Login = async (req, res) => {
 
 const Logout = async (req, res) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("accesstoken");
+        res.clearCookie("refreshtoken");
         res.status(200).json({
             message: "User logged out successfully",
             success: true,
