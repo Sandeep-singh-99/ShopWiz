@@ -86,7 +86,7 @@ export default function HorizontalCategory() {
 
   return (
     <div className="container mx-auto">
-      <div className="flex items-center justify-between gap-6 sm:gap-3  scrollbar-none overflow-hidden">
+      <div className="flex items-center justify-between gap-6 sm:gap-3  overflow-x-auto scrollbar-none transition-all overflow-hidden">
         {category.map((item) => (
           <div
             key={item.id}

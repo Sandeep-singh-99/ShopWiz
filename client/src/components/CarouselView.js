@@ -9,7 +9,7 @@ import img4 from '../assets/img4.jpg'
 
 export default function CarouselView() {
   return (
-    <Carousel dynamicHeight emulateTouch infiniteLoop autoPlay showStatus={false} showArrows={false} showIndicators={false} showThumbs={false}>
+    <Carousel className='' dynamicHeight emulateTouch infiniteLoop autoPlay showStatus={false} showArrows={false} showIndicators={false} showThumbs={false}>
       {/* <div>
         <img src={img1} alt='not showing'/>
       </div> */}
