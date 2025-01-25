@@ -11,6 +11,7 @@ const authRouter = require("./router/auth-router");
 const productRouter = require("./router/product-router");
 const cartRouter = require("./router/cart-router");
 const categoryRouter = require("./router/category-router");
+const commentRouter = require("./router/comment-router")
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -50,6 +51,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/getProductByCategory", categoryRouter);
+app.use("/api/comment", commentRouter)
 
 ConnectDB()
   .then(() => {
