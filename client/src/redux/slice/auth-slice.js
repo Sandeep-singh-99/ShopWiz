@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosInstance from "../../helpers/axiosInstance";
 
 // axios.defaults.withCredentials = true;
 
@@ -26,7 +27,7 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.post(
+    const response = await axiosInstance.post(
       "http://localhost:5000/api/auth/login",
       data,
       {
@@ -53,7 +54,7 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
 export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
     axios.defaults.withCredentials = true;
-    const response = await axios.get("http://localhost:5000/api/auth/logout");
+    const response = await axiosInstance.get("http://localhost:5000/api/auth/logout");
     localStorage.removeItem("token");
     localStorage.removeItem("loginData");
     return response.data;
@@ -72,7 +73,7 @@ export const checkAuth = createAsyncThunk(
       //   return thunkApi.rejectWithValue("No token found");
       // }
 
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         "http://localhost:5000/api/auth/check-auth",
         {
           // headers: {
