@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         // Attempt to refresh the token
-        const refreshResponse = await axiosInstance.get('/auth/refresh-token');
+        const refreshResponse = await axiosInstance.get('/auth/check-auth');
         if (refreshResponse.status === 200) {
           // Retry the original request with the new token
           return axiosInstance(originalRequest);
@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
         console.error('Refresh token failed:', refreshError.message);
         localStorage.removeItem('token'); // Remove any invalid tokens
         localStorage.removeItem('loginData'); // Clear user data
-        window.location.href = '/login'; // Redirect to login page
+        // window.location.href = '/login'; // Redirect to login page
         return Promise.reject(refreshError); // Propagate the error
       }
     }
