@@ -12,6 +12,8 @@ export default function Profile() {
   const handleLogout = () => {
     dispatch(logout());
     console.log("Logged out");
+    localStorage.removeItem("token");
+    localStorage.removeItem("loginData");
     navigate("/");
   };
 
@@ -28,7 +30,7 @@ export default function Profile() {
           <h1>sk3356337@gmail.com</h1>
           <p>9651869780</p>
 
-          <button className="w-full bg-purple-500 text-white rounded-lg py-1">Logout</button>
+          <button onClick={handleLogout} className="w-full bg-purple-500 text-white rounded-lg py-1">Logout</button>
         </div>
 
         <div className="flex flex-col gap-5 items-center">

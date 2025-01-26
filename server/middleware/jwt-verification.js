@@ -1,22 +1,33 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = async (req, res, next) => {
-  const Token = req.cookies.accesstoken
+  const accessToken = req.cookies.accesstoken;
   console.log("Request cookies: ", req.cookies);
-  if (!Token) {
+  if (!accessToken) {
     const renewed = await renewToken(req, res);
     if (renewed) {
-      next(); // Proceed to the next middleware if the token was successfully renewed
+      return next();
     } else {
-      return; // Stop further execution if renewToken sends a response
+      return res.status(401).json({ message: "Unauthorized", success: false });
     }
-  } else {
-    try {
-      const decoded = jwt.verify(Token, process.env.JWT_SECRET);
-      req.user = decoded;
-      next(); // Proceed if the token is valid
-    } catch (error) {
-      return res.status(401).json({ message: "Unauthorized", success: false }); // Send a response if token is invalid
+  }
+
+  try {
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      const renewed = await renewToken(req, res);
+      if (renewed) {
+        return next();
+      } else {
+        return res
+          .status(401)
+          .json({ message: "Unauthorized", success: false });
+      }
+    } else {
+      return res.status(401).json({ message: "Unauthorized", success: false });
     }
   }
 };
@@ -25,27 +36,25 @@ const renewToken = async (req, res) => {
   const refreshToken = req.cookies.refreshtoken;
 
   if (!refreshToken) {
-    res.status(401).json({ message: "Unauthorized", success: false });
-    return false; // Explicitly return false to stop further execution
+    return false;
   }
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
-    const accesstoken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
       expiresIn: "30m",
     });
 
-    res.cookie("accesstoken", accesstoken, {
+    res.cookie("accesstoken", accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 1800000,
     });
 
-    return true; // Token successfully renewed
+    return true;
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized", success: false });
-    return false; // Explicitly return false to stop further execution
+    return false;
   }
 };
 

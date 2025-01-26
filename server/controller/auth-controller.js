@@ -157,30 +157,30 @@ const adminLogin = async (req, res) => {
     }
 };
 
-const refreshToken = async (req, res) => {
-    const refreshToken = req.cookies.refreshtoken;
+// const refreshToken = async (req, res) => {
+//     const refreshToken = req.cookies.refreshtoken;
   
-    if (!refreshToken) {
-      return res.status(401).json({ message: "Unauthorized", success: false });
-    }
+//     if (!refreshToken) {
+//       return res.status(401).json({ message: "Unauthorized", success: false });
+//     }
   
-    try {
-      const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
-      const accesstoken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
-        expiresIn: "30m",
-      });
+//     try {
+//       const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+//       const accesstoken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
+//         expiresIn: "30m",
+//       });
   
-      res.cookie("accesstoken", accesstoken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 1800000,
-      });
+//       res.cookie("accesstoken", accesstoken, {
+//         httpOnly: true,
+//         secure: true,
+//         sameSite: "none",
+//         maxAge: 1800000,
+//       });
   
-      res.status(200).json({ message: "Token refreshed", success: true });
-    } catch (error) {
-      res.status(401).json({ message: "Unauthorized", success: false });
-    }
-  };
+//       res.status(200).json({ message: "Token refreshed", success: true });
+//     } catch (error) {
+//       res.status(401).json({ message: "Unauthorized", success: false });
+//     }
+//   };
 
-module.exports = { register, Login, Logout, checkAuth, adminLogin, refreshToken }
+module.exports = { register, Login, Logout, checkAuth, adminLogin }

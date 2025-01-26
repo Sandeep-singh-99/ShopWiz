@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CarouselView from "../components/CarouselView";
 import HorizontalCategory from "../components/HorizontalCategory";
 import HorizontalCardProduct from "../components/HorizontalCardProduct";
@@ -10,33 +10,22 @@ import { message } from "antd";
 export default function Home() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
-  
-  useEffect(() => {
-    const clearUserData = () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("loginData");
-    };
-  
-    const authenticateAndFetchData = async () => {
-      try {
-        const isAuthenticatedUser = await dispatch(checkAuth()).unwrap();
-        if (isAuthenticatedUser) {
-          await dispatch(countCartProduct());
-        } else {
-          clearUserData();
-          await dispatch(restartCartCount());
-        }
-      } catch (error) {
-         message.error("Authentication failed. Please log in again.");
-        // clearUserData();
-        await dispatch(restartCartCount());
-      }
-    };
-  
-    authenticateAndFetchData();
-  }, [dispatch]);
 
- 
+  // Ensure `checkAuth` is called only once on component mount
+  useEffect(() => {
+    if (isAuthenticated === null) {
+      dispatch(checkAuth());
+    }
+  }, [dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(countCartProduct());
+    } else {
+      dispatch(restartCartCount());
+    }
+  }, [dispatch, isAuthenticated]);
+
   return (
     <div className="px-4 md:px-20 py-5">
       <div className="flex flex-col gap-5">

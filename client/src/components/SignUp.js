@@ -4,10 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { register } from "../redux/slice/auth-slice";
 import { message } from "antd";
+import axios from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [formData, setFormData] = useState({
     imageUrl: null, // Store the image URL as a string
@@ -17,15 +18,12 @@ export default function Register() {
     password: "",
   });
 
-  
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];   
-
+    const file = e.target.files[0];
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
@@ -38,7 +36,6 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   // console.log("Form Data Before Submission: ", formData);
 
     const data = new FormData();
     data.append("file", uploadedImage); // Append the actual file object
@@ -47,20 +44,28 @@ export default function Register() {
     data.append("phone", formData.phone);
     data.append("password", formData.password);
 
-    // ... rest of your code (potentially dispatch register action)
-
     try {
-      dispatch(register(data))
-      navigate("/login");
-      message.success("Registration successful");
-      // Handle successful registration
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200 && response.data.success) {
+        navigate("/login");
+        message.success("Registration successful");
+      } else {
+        message.error(response.data.message || "Registration failed");
+      }
     } catch (error) {
       message.error("Registration failed");
-      // Handle registration errors
     }
   };
 
-  // ... rest of your component rendering logic
   return (
     <div className="sm:pt-16 pt-10">
       <div className="flex sm:justify-between justify-center">
@@ -70,7 +75,9 @@ export default function Register() {
 
         <div className="flex sm:w-2/4 w-3/4 shadow-2xl rounded-xl sm:shadow-none sm:rounded-none flex-col text-center justify-center items-center">
           <div className="sm:w-1/2 w-10/12 py-5">
-            <h1 className="sm:text-4xl text-2xl sm:font-semibold font-bold mb-3">Create an account</h1>
+            <h1 className="sm:text-4xl text-2xl sm:font-semibold font-bold mb-3">
+              Create an account
+            </h1>
             <h2 className="sm:text-lg text-sm">Enter your details below</h2>
 
             <form onSubmit={handleSubmit} className="mt-7">
@@ -79,7 +86,6 @@ export default function Register() {
                   type="file"
                   id="fileInput"
                   name="imageUrl"
-                  
                   className="hidden"
                   onChange={handleFileChange}
                 />

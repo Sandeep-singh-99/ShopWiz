@@ -4,6 +4,8 @@ import img1 from "../assets/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/slice/auth-slice";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+import { message } from "antd";
 
 export default function Login() {
   const dispatch = useDispatch(); // Initialize the dispatch function
@@ -20,32 +22,7 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const data = new FormData();
-  //   data.append("email", formData.email);
-  //   data.append("password", formData.password);
-  //   console.log("Data: ", data);
-
-  //   if (!formData.email || !formData.password) {
-  //     alert("Please fill in all fields.");
-  //     return;
-  //   }
-  //   try {
-  //     console.log("Data12: ", data);
-      
-  //     dispatch(login(data));
-  //     navigate("/"); // Redirect to home page
-
-  //     alert("Logged in successfully");
-  //   } catch (error) {
-  //     alert("Error logging in");
-  //     console.log("Error: ", error);
-  //   }
-  // };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.email || !formData.password) {
@@ -61,11 +38,31 @@ export default function Login() {
     console.log("Form Data before dispatch: ", data);
   
     try {
-      // Dispatch login action
-      dispatch(login(data)); 
-      navigate("/"); // Redirect to home page
+      const response = await axios.post("http://localhost:5000/api/auth/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+
+      if (response.status === 200 && response.data.success) {
+        const { data: userData } = response.data; 
+        if (userData) {
+          localStorage.setItem("token", userData.accesstoken); 
+          localStorage.setItem("loginData", JSON.stringify(userData.user));
+
+          dispatch(login(userData.user));
+        }
+        navigate("/");
+        message.success("login successful");
+      } else {
+        message.error("login failed");
+      }
+
+      // dispatch(login(data)); 
+      // navigate("/"); // Redirect to home page
   
-      alert("Logged in successfully");
+      // alert("Logged in successfully");
     } catch (error) {
       alert("Error logging in");
       console.log("Error: ", error);

@@ -32,9 +32,6 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
-    // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    // allowedHeaders: ["Content-Type", "Authorization"],
-    // exposedHeaders: ["set-cookie"],
   })
 );
 app.use(cookieParser());
@@ -52,6 +49,12 @@ app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/getProductByCategory", categoryRouter);
 app.use("/api/comment", commentRouter)
+
+
+app.use((err, req, res, next) => {
+  console.log("Error: ", err.stack);
+  res.status(501).send(`Something broke! ${err.message}`);
+})
 
 ConnectDB()
   .then(() => {

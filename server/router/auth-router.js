@@ -13,7 +13,7 @@ router.route('/logout').get(authMiddleware, authController.Logout)
 router.route('/admin-login').post(authController.adminLogin)
 
 router.route('/check-auth').get(authMiddleware, authController.checkAuth)
-router.route('/refresh-token').get(authMiddleware ,authController.refreshToken)
+// router.route('/refresh-token').get(authMiddleware ,authController.refreshToken)
 
 module.exports = router;
 
