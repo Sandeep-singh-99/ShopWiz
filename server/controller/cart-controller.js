@@ -51,7 +51,7 @@ const addToCart = async (req, res) => {
 
 const addToCartViewProduct = async (req, res) => {
   try {
-    const currentUser = req.user.id; 
+    const currentUser = req.user?.id; 
 
     const allProducts = await Cart.find({ userId: currentUser }).populate(
       "productId"
@@ -148,7 +148,8 @@ const updateCartProduct = async (req, res) => {
 
 const countAddToCartProduct = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id;
+    console.log("Decoded user from request: ", req.user);
 
 
     const count = await Cart.countDocuments({ userId });

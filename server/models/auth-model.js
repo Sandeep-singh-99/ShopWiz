@@ -44,12 +44,9 @@ authSchema.methods.comparePassword = async function(password) {
 }
 
 authSchema.methods.generateToken = function() {
-    return jwt.sign({id: this._id}, process.env.JWT_SECRET, {expiresIn: "30m"})
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET_TOKEN, {expiresIn: "1h"})
 }
 
-authSchema.methods.RefreshGenerateToken = function () {
-    return jwt.sign({id: this._id}, process.env.REFRESH_TOKEN, {expiresIn: "7d"})
-}
 
 const Auth = new model("auth", authSchema)
 

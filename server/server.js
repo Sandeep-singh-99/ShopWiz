@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
+const morgan = require("morgan");
 
 const PORT = process.env.PORT || 5001;
 const ConnectDB = require("./config/db");
@@ -25,6 +26,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+app.use(morgan('dev'))
 app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,13 +38,7 @@ app.use(
 );
 app.use(cookieParser());
 
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//     next();
-// });
+
 
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
