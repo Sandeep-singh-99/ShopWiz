@@ -5,10 +5,11 @@ const verifyToken = async (req, res, next) => {
   console.log("Request cookies: ", req.cookies);
   if (!accessToken) {
     const renewed = await renewToken(req, res);
-    if (renewed) {
+    if (renewed.success) {
+      req.user = { id: renewed.userId };
       return next();
     } else {
-      return res.status(401).json({ message: "Unauthorized", success: false });
+      return res.status(401).json({ message: "Unauthorized token", success: false });
     }
   }
 
@@ -24,10 +25,10 @@ const verifyToken = async (req, res, next) => {
       } else {
         return res
           .status(401)
-          .json({ message: "Unauthorized", success: false });
+          .json({ message: "Unauthorized token", success: false });
       }
     } else {
-      return res.status(401).json({ message: "Unauthorized", success: false });
+      return res.status(401).json({ message: "Unauthorized token", success: false });
     }
   }
 };
@@ -52,10 +53,14 @@ const renewToken = async (req, res) => {
       maxAge: 1800000,
     });
 
-    return true;
+    return {success: true, accessToken, userId: decoded.id};
   } catch (error) {
     return false;
   }
 };
 
 module.exports = verifyToken;
+
+
+
+
