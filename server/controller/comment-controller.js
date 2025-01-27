@@ -1,4 +1,6 @@
 const Comment = require("../models/comment-models");
+const NodeCache = require("node-cache");
+const nodeCache = new NodeCache();
 
 const addComment = async (req, res) => {
     try {
@@ -43,15 +45,21 @@ const addComment = async (req, res) => {
 const viewComment = async (req, res) => {
     try {
         const { productId } = req.body;
+        let comments;
 
         // Validate productId
         if (!productId) {
             return res.status(400).json({ message: "Product ID is required", success: false });
         }
 
-        // Fetch comments for the product and populate user details
-        const comments = await Comment.find({ productId })
+        if(nodeCache.has("comments")) {
+            comments = JSON.parse(nodeCache.get("comments"));
+        } else {
+            const comments = await Comment.find({ productId })
             .populate("userId", "username imageUrl");
+            nodeCache.set("comments", JSON.stringify(comments));
+        }
+        
 
         // Check if comments exist
         if (!comments || comments.length === 0) {

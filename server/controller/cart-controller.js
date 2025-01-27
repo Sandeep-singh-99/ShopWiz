@@ -1,4 +1,6 @@
 const Cart = require("../models/cart-model");
+const NodeCache = require("node-cache");
+const nodeCache = new NodeCache();
 
 const addToCart = async (req, res) => {
   try {
@@ -35,6 +37,8 @@ const addToCart = async (req, res) => {
 
     const newAddToCart = await Cart.create(payload);
 
+    nodeCache.del("allProducts");
+
     res.status(200).json({
       message: "Product added to cart",
       success: true,
@@ -53,9 +57,17 @@ const addToCartViewProduct = async (req, res) => {
   try {
     const currentUser = req.user?.id; 
 
-    const allProducts = await Cart.find({ userId: currentUser }).populate(
-      "productId"
-    );
+    let allProducts;
+
+    if(nodeCache.has("allProducts")) {
+      allProducts = JSON.parse(nodeCache.get("allProducts"));
+    } else {
+       allProducts = await Cart.find({ userId: currentUser }).populate(
+        "productId"
+      );
+      nodeCache.set("allProducts", JSON.stringify(allProducts));
+    }
+
 
     // Check if the cart is empty
     if (!allProducts.length) {
@@ -98,6 +110,8 @@ const deleteCart = async (req, res) => {
       });
     }
 
+    nodeCache.del("allProducts");
+
     res.status(200).json({
       message: "Product deleted from cart",
       success: true,
@@ -137,6 +151,8 @@ const updateCartProduct = async (req, res) => {
       if (updateProduct.matchedCount === 0) {
         return res.status(404).json({ message: "Cart product not found or not updated", success: false });
       }
+
+      nodeCache.del("allProducts");
   
       res.status(200).json({ message: "Product updated", success: true, data: updateProduct });
     } catch (error) {

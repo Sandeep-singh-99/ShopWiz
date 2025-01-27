@@ -1,4 +1,7 @@
 const Product = require("../models/product-model");
+const NodeCache = require("node-cache");
+
+const nodeCache = new NodeCache();
 
 const addProduct = async (req, res) => {
   try {
@@ -28,6 +31,8 @@ const addProduct = async (req, res) => {
       cloudinaryId: cloudinaryIds, // Store array of cloudinary ids
     });
 
+    nodeCache.del("getProducts");
+
     res.status(201).json({
       message: "Product added successfully",
       success: true,
@@ -43,7 +48,14 @@ const addProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const getProducts = await Product.find();
+    let getProducts;
+
+    if(nodeCache.has("getProducts")) {
+      getProducts = JSON.parse(nodeCache.get("getProducts"));
+    } else {
+      getProducts = await Product.find();
+      nodeCache.set("getProducts", JSON.stringify(getProducts));
+    }
 
     res.status(200).json({
       message: "Products fetched successfully",
@@ -63,6 +75,8 @@ const deleteProduct = async (req, res) => {
     const { id } = req.params;
 
     const delProduct = await Product.findByIdAndDelete(id);
+
+    nodeCache.del("getProducts");
 
     res.status(200).json({
       message: "Product deleted successfully",
@@ -120,6 +134,8 @@ const updateProduct = async (req, res) => {
         success: false,
       });
     }
+
+    nodeCache.del("getProducts");
 
     res.status(200).json({
       message: "Product updated successfully",

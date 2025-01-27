@@ -6,13 +6,15 @@ const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 
+
 const PORT = process.env.PORT || 5001;
 const ConnectDB = require("./config/db");
 const authRouter = require("./router/auth-router");
 const productRouter = require("./router/product-router");
 const cartRouter = require("./router/cart-router");
 const categoryRouter = require("./router/category-router");
-const commentRouter = require("./router/comment-router")
+const commentRouter = require("./router/comment-router");
+const NodeCache = require("node-cache");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
