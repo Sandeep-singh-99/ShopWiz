@@ -11,20 +11,22 @@ export default function Home() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  // Ensure `checkAuth` is called only once on component mount
   useEffect(() => {
-    if (isAuthenticated === null) {
-      dispatch(checkAuth());
-    }
-  }, [dispatch, isAuthenticated]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(countCartProduct());
+    if(isAuthenticated) {
+      dispatch(checkAuth()).then((res) => {
+        dispatch(countCartProduct())
+      }).catch((err) => {
+        dispatch(restartCartCount())
+        message.error("Session expired. Please login again.")
+        localStorage.removeItem("token")
+        localStorage.removeItem("loginData")
+      })
     } else {
-      dispatch(restartCartCount());
+      dispatch(restartCartCount())
+      localStorage.removeItem("token")
+      localStorage.removeItem("loginData")
     }
-  }, [dispatch, isAuthenticated]);
+  },[])
 
   return (
     <div className="px-4 md:px-20 py-5">
