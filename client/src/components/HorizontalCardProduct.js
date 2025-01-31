@@ -23,7 +23,7 @@ export default function HorizontalCardProduct({ category, heading }) {
         setError(false);
       } catch (error) {
         message.error("Failed to load products. Please try again.");
-        setLoading(false);
+        setLoading(true);
         setError(true);
       }
     };

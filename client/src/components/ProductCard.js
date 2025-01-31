@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
   return (
     <Link
       to={`product/${product?._id}`}
-      className="w-[270px] h-[380px] rounded-lg shadow-md border flex justify-stretch flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
+      className="w-[270px] h-[380px] rounded-lg shadow-md border-2 flex justify-stretch flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
     >
       <div className="relative w-full h-52">
         <img

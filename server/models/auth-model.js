@@ -44,7 +44,7 @@ authSchema.methods.comparePassword = async function(password) {
 }
 
 authSchema.methods.generateToken = function() {
-    return jwt.sign({id: this._id}, process.env.JWT_SECRET_TOKEN, {expiresIn: "1h"})
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET_TOKEN, {expiresIn: "2h"})
 }
 
 

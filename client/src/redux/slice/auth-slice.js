@@ -1,45 +1,37 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import axiosInstance from "../../helpers/axiosInstance";
 
 // axios.defaults.withCredentials = true;
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
-    axios.defaults.withCredentials = true;
-    const response = await axiosInstance.get(
-      "http://localhost:5000/api/auth/logout"
-    );
-    localStorage.removeItem("token");
-    localStorage.removeItem("loginData");
-    return response.data;
+    await axios.get("http://localhost:5000/api/auth/logout");
+    thunkApi.dispatch(logoutAuth());
   } catch (error) {
-    return thunkApi.rejectWithValue(error.response.data);
+    return thunkApi.rejectWithValue(error.response?.data || "Logout failed");
   }
 });
 
-export const checkAuth = createAsyncThunk(
-  "auth/checkAuth",
-  async (_, thunkApi) => {
-    try {
-      axios.defaults.withCredentials = true;
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return thunkApi.rejectWithValue("No token found");
-      }
 
-      const response = await axiosInstance.get(
-        "http://localhost:5000/api/auth/check-auth",
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data);
+// Check Auth with Optimized Logic
+export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, thunkApi) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return thunkApi.rejectWithValue("No token found");
     }
+
+    const response = await axios.get("http://localhost:5000/api/auth/check-auth", { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 403 || error.response?.status === 401) {
+      thunkApi.dispatch(logoutAuth());
+    }
+    return thunkApi.rejectWithValue(error.response?.data || "Authentication failed");
   }
-);
+});
+
 
 export const adminLogin = createAsyncThunk(
   "auth/adminLogin",
@@ -74,7 +66,8 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
-      state.user = action.payload; // Set the user data in state
+      state.user = action.payload;
+      localStorage.setItem("loginData", JSON.stringify(action.payload));
     },
     logoutAuth: (state) => {
       state.isAuthenticated = false;
@@ -82,39 +75,27 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("loginData");
     },
-    // Other reducers if needed...
   },
   extraReducers: (builder) => {
     builder
-      .addCase(logout.fulfilled, (state) => {
-        state.isAuthenticated = false;
-        localStorage.removeItem("token");
-        localStorage.removeItem("loginData");
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
+        state.user = action.payload;
+        state.isLoading = false;
       })
-      .addMatcher(
-        (action) => action.type.endsWith("/pending"),
-        (state) => {
-          state.isLoading = true;
-          state.error = null;
-        }
-      )
-      .addMatcher(
-        (action) => action.type.endsWith("/fulfilled"),
-        (state) => {
-          state.isLoading = false;
-        }
-      )
-      .addMatcher(
-        (action) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.isLoading = false;
-          state.error = action.payload;
-        }
-      );
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.error = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isAuthenticated = false;
+      });
   },
 });
+
 export const { login, logoutAuth } = authSlice.actions;
 export default authSlice.reducer;

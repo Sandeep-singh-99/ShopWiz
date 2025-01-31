@@ -69,7 +69,7 @@ const Login = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 1800000, // 1 hour
+      maxAge: 2 * 60 * 60 * 1000 //1800000, // 1 hour
     });
 
     res.status(200).json({
@@ -104,19 +104,18 @@ const Logout = async (req, res) => {
 
 const checkAuth = async (req, res) => {
     try {
-        const user = await Auth.findById(req.user.id).select("-password");
+        // const user = await Auth.findById(req.user.id).select("-password");
 
-        if (!user) {
-            return res.status(400).json({
-                message: "User not found",
-                success: false,
-            })
-        }
+        // if (!user) {
+        //     return res.status(400).json({
+        //         message: "User not found",
+        //         success: false,
+        //     })
+        // }
 
         res.status(200).json({
             message: "User is authenticated",
-            success: true,
-            user,
+            success: true
         })
     } catch (error) {
         res.status(500).json({

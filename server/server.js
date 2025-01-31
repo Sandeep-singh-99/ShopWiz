@@ -35,8 +35,8 @@ if (cluster.isMaster) {
   const app = express();
 
   const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 500,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000,
     message: {
       status: 429,
       message: "Too many requests from this IP, please try again after 15 minutes",
