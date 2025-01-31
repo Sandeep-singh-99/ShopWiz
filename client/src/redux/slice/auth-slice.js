@@ -115,6 +115,7 @@ const authSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
           state.isLoading = false;
+          state.isAuthenticated = false;
           state.error = action.payload;
         }
       );
