@@ -5,6 +5,6 @@ const router = express.Router()
 
 router.route("/add-Comment").post(verifyToken ,addComment)
 
-router.route("/view-comment").get(viewComment)
+router.route("/view-comment/:productId").get(viewComment)
 
 module.exports = router

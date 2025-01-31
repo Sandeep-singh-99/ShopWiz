@@ -11,17 +11,10 @@ export default function Profile() {
 
   const handleLogout = () => {
     dispatch(logout());
-    console.log("Logged out");
     localStorage.removeItem("token");
     localStorage.removeItem("loginData");
     navigate("/");
   };
-
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token")) {
-  //     navigate("/");
-  //   }
-  // });
   return (
     <div className="flex py-28">
       <div className="flex justify-evenly w-full">

@@ -9,24 +9,28 @@ import { message } from "antd";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if(isAuthenticated) {
-      dispatch(checkAuth()).then((res) => {
-        dispatch(countCartProduct())
-      }).catch((err) => {
-        dispatch(restartCartCount())
-        message.error("Session expired. Please login again.")
-        localStorage.removeItem("token")
-        localStorage.removeItem("loginData")
-      })
-    } else {
-      dispatch(restartCartCount())
-      localStorage.removeItem("token")
-      localStorage.removeItem("loginData")
-    }
-  },[])
+    const verifyAuth = async () => {
+      if (!token) {
+        dispatch(restartCartCount()); // Clear cart if logged out
+        return;
+      }
+
+      try {
+        await dispatch(checkAuth()).unwrap();
+        dispatch(countCartProduct());
+      } catch (err) {
+        dispatch(restartCartCount());
+        message.error("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginData");
+      }
+    };
+
+    verifyAuth();
+  }, [token, dispatch]);
 
   return (
     <div className="px-4 md:px-20 py-5">

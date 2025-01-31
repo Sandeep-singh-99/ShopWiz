@@ -23,17 +23,14 @@ export const checkAuth = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       axios.defaults.withCredentials = true;
-      // const token = localStorage.getItem("token");
-      // if (!token) {
-      //   return thunkApi.rejectWithValue("No token found");
-      // }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return thunkApi.rejectWithValue("No token found");
+      }
 
       const response = await axiosInstance.get(
         "http://localhost:5000/api/auth/check-auth",
         {
-          // headers: {
-          //   Authorization: `Bearer ${token}`, // Include the token in the request header
-          // },
           withCredentials: true,
         }
       );
@@ -70,7 +67,6 @@ const initialState = {
   isAuthenticated: !!localStorage.getItem("token"), // Use a boolean for clarity
   error: null,
 };
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -115,7 +111,6 @@ const authSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
           state.isLoading = false;
-          state.isAuthenticated = false;
           state.error = action.payload;
         }
       );

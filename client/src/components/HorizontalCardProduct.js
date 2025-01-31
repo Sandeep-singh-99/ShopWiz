@@ -1,46 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { message } from "antd";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import useAddToCart from "../helpers/useAddToCart";
+
+const ProductCard = lazy(() => import("./ProductCard")); // Lazy Loading
 
 export default function HorizontalCardProduct({ category, heading }) {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
 
-  const addToCart = useAddToCart();
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/getProductByCategory/categorywise/${category}`
-      );
-      setCategories(response.data.data);
-      setLoading(false);
-      setError(false);
-    } catch (error) {
-      message.error("Failed to load products. Please try again.");
-      setLoading(false);
-      setError(true);
-    }
-  };
+  const memoizedCategories = useMemo(() => categories, [categories]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:5000/api/getProductByCategory/categorywise/${category}`
+        );
+        setCategories(response.data.data);
+        setLoading(false);
+        setError(false);
+      } catch (error) {
+        message.error("Failed to load products. Please try again.");
+        setLoading(false);
+        setError(true);
+      }
+    };
+
     fetchData();
   }, [category]);
 
   return (
-    <div className="container mx-auto  px-4 py-4 my-8 relative">
+    <div className="container mx-auto px-4 py-4 my-8 relative">
       {/* Section Heading */}
-
       <div className="flex items-center gap-3 pb-4">
         <div className="bg-[#db4444] w-4 h-10 rounded"></div>
         <h2 className="font-semibold text-[16px] text-[#db4444]">{heading}</h2>
       </div>
 
       {/* Product List */}
-      <div className="flex items-center gap-6  whitespace-nowrap Scrollbar-hide overflow-hidden overflow-x-auto transition-all">
+      <div className="flex items-center gap-6 whitespace-nowrap Scrollbar-hide overflow-hidden overflow-x-auto transition-all">
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
               <div
@@ -52,38 +52,13 @@ export default function HorizontalCardProduct({ category, heading }) {
                 <div className="h-10 bg-gray-300 rounded-md"></div>
               </div>
             ))
-          : categories.slice(0, 4).map((product) => (
-              <Link
+          : memoizedCategories.slice(0, 4).map((product) => (
+              <Suspense
+                fallback={<div className="h-52 w-52 bg-gray-300"></div>}
                 key={product?._id}
-                to={`product/${product?._id}`}
-                className="w-[270px] h-[380px] rounded-lg shadow-md flex justify-stretch  flex-col mx-auto p-4 transition-transform duration-300 hover:scale-105"
               >
-                <div className="relative w-full h-52">
-                  <img
-                    src={product?.productImage?.[0] || "/placeholder-image.png"}
-                    alt={product?.name || "Product Image"}
-                    loading="lazy"
-                    className="w-full h-52 mix-blend-multiply object-contain rounded-md"
-                  />
-                </div>
-                <div className="flex flex-col mt-4 space-y-2 overflow-hidden">
-                  <h1 className="text-lg font-semibold text-gray-800 truncate">
-                    {product?.productName ? (
-                      product.productName
-                    ) : (
-                      <span className="block">Unnamed Product</span>
-                    )}
-                  </h1>
-                  <p className="text-md text-gray-600">
-                    {product?.salesPrice
-                      ? `$${product.salesPrice.toFixed(2)}`
-                      : "Price Unavailable"}
-                  </p>
-                  <button onClick={(e) => { e.preventDefault(); addToCart(product?._id); }} className="bg-[#db4444] hover:bg-[#db4411] text-white py-1 mt-2 rounded-lg">
-                    Add to cart
-                  </button>
-                </div>
-              </Link>
+                <ProductCard product={product} />
+              </Suspense>
             ))}
       </div>
     </div>
