@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { logout } from "./auth-slice";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+const API_BASE_URL = process.env.REACT_APP_API_URL 
 
 export const addCart = createAsyncThunk(
   "cart/addToCart",

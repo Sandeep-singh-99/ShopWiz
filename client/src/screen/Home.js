@@ -25,6 +25,7 @@ const productCategories = [
 export default function Home() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth)
+  
 
   useEffect(() => {
     dispatch(checkAuth());
@@ -36,7 +37,7 @@ export default function Home() {
     } else {
       dispatch(restartCartCount());
     }
-  }, [isAuthenticated, dispatch]);// `token` removed from dependencies as it doesn't change without a page refresh
+  }, []);
 
   return (
     <div className="px-4 md:px-20 py-5">

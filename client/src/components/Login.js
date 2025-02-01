@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { message } from "antd";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+const API_BASE_URL = process.env.REACT_APP_API_URL
 
 export default function Login() {
   const dispatch = useDispatch(); // Initialize the dispatch function

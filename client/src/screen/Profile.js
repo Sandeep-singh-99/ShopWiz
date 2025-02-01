@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import img1 from "../assets/dl.beatsnoop 1.png";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/slice/auth-slice";
+import { logout, logoutAuth } from "../redux/slice/auth-slice";
 
 export default function Profile() {
   const data = JSON.parse(localStorage.getItem("loginData"));
@@ -10,7 +10,7 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutAuth());
     localStorage.removeItem("token");
     localStorage.removeItem("loginData");
     navigate("/");
