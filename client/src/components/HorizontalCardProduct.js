@@ -2,6 +2,8 @@ import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { message } from "antd";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 const ProductCard = lazy(() => import("./ProductCard")); // Lazy Loading
 
 export default function HorizontalCardProduct({ category, heading }) {
@@ -16,7 +18,7 @@ export default function HorizontalCardProduct({ category, heading }) {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/api/getProductByCategory/categorywise/${category}`
+          `${API_BASE_URL}/api/getProductByCategory/categorywise/${category}`
         );
         setCategories(response.data.data);
         setLoading(false);

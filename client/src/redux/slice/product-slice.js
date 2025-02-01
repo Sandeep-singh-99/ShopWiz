@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export const fetchProduct = createAsyncThunk(
   "product/fetchProduct",
   async (_, thunkApi) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/product/getProduct"
+        `${API_BASE_URL}/api/product/getProduct`
       );
       return response.data;
     } catch (error) {
@@ -17,7 +19,7 @@ export const fetchProduct = createAsyncThunk(
 
 export const fetchProductById = createAsyncThunk("product/fetchProductById", async (id, thunkApi) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/product/getProductById/${id}`);
+    const response = await axios.get(`${API_BASE_URL}/api/product/getProductById/${id}`);
     return response.data;
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data)
@@ -29,7 +31,7 @@ export const addProduct = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/product/addProduct",
+        `${API_BASE_URL}/api/product/addProduct`,
         data,
         {
           headers: {
@@ -49,7 +51,7 @@ export const deleteProduct = createAsyncThunk(
   async (id, thunkApi) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/product/deleteProduct/${id}`
+        `${API_BASE_URL}/api/product/deleteProduct/${id}`
       );
       return response.data;
     } catch (error) {

@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export const fetchCategory = createAsyncThunk(
   "category/fetchCategory",
   async (category, thunkApi) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/getProductByCategory/categorywise/${category?.join(",")}`
+        `${API_BASE_URL}/api/getProductByCategory/categorywise/${category?.join(",")}`
       );
       return response.data;
     } catch (error) {

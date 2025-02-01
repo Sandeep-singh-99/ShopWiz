@@ -6,6 +6,8 @@ import { register } from "../redux/slice/auth-slice";
 import { message } from "antd";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,7 +48,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_BASE_URL}/api/auth/register`,
         data,
         {
           headers: {

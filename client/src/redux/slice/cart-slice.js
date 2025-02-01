@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { logout } from "./auth-slice";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export const addCart = createAsyncThunk(
   "cart/addToCart",
   async (id, thunkApi) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/cart/addtocart",
+        `${API_BASE_URL}/api/cart/addtocart`,
         { productId: id },
         {
           headers: {
@@ -29,7 +31,7 @@ export const getToCart = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/cart/view-cart-product",
+        `${API_BASE_URL}/api/cart/view-cart-product`,
         {
           withCredentials: true,
         }
@@ -46,7 +48,7 @@ export const countCartProduct = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/cart/countAddToCartProduct",
+        `${API_BASE_URL}/api/cart/countAddToCartProduct`,
         {
           withCredentials: true,
         }
@@ -63,7 +65,7 @@ export const deleteCartProduct = createAsyncThunk(
   async (id, thunkApi) => {
     try {
       const response = await axios.delete(
-        "http://localhost:5000/api/cart/delete-cart-product",
+        `${API_BASE_URL}/api/cart/delete-cart-product`,
         {
           data: { _id: id }, // Send the `id` in the request body
           headers: {
@@ -85,7 +87,7 @@ export const updateToCartProduct = createAsyncThunk(
   async ({ _id, quantity }, thunkApi) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/cart/update-cart-product`,
+        `${API_BASE_URL}/api/cart/update-cart-product`,
         { _id, quantity }, // Send both the ID and new quantity in the body
         {
           withCredentials: true,

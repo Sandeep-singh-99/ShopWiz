@@ -10,6 +10,8 @@ import CustomCard from "../../components/CustomCard";
 
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export default function Product() {
   const dispatch = useDispatch();
 
@@ -136,7 +138,7 @@ export default function Product() {
       };
   
       const response = await axios.put(
-        `http://localhost:5000/api/product/updateProduct/${updateProductId}`,
+        `${API_BASE_URL}/api/product/updateProduct/${updateProductId}`,
         payload,
         {
           headers: {

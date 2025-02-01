@@ -3,9 +3,11 @@ import axios from "axios";
 
 // axios.defaults.withCredentials = true;
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL  
+
 export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
   try {
-    await axios.get("http://localhost:5000/api/auth/logout");
+    await axios.get(`${API_BASE_URL}/api/auth/logout`);
     thunkApi.dispatch(logoutAuth());
   } catch (error) {
     return thunkApi.rejectWithValue(error.response?.data || "Logout failed");
@@ -22,7 +24,7 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, thunkApi) 
       return thunkApi.rejectWithValue("No token found");
     }
 
-    const response = await axios.get("http://localhost:5000/api/auth/check-auth", { withCredentials: true });
+    const response = await axios.get(`${API_BASE_URL}/api/auth/check-auth`, { withCredentials: true });
     return response.data;
   } catch (error) {
     if (error.response?.status === 403 || error.response?.status === 401) {
@@ -38,7 +40,7 @@ export const adminLogin = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/admin-login",
+        `${API_BASE_URL}/api/auth/admin-login`,
         data,
         {
           headers: {

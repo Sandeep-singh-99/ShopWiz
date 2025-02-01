@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export const AddComment = createAsyncThunk('comment/addComment', async ({ id, data}, thunkApi) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/comment/add-comment', {productId:id, comment: data.comment}, {
+        const response = await axios.post(`${API_BASE_URL}/api/comment/add-comment`, {productId:id, comment: data.comment}, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -17,7 +19,7 @@ export const AddComment = createAsyncThunk('comment/addComment', async ({ id, da
 
 export const GetComments = createAsyncThunk('comment/getComments', async (productId, thunkApi) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/comment/view-comment/${productId}`, 
+        const response = await axios.get(`${API_BASE_URL}/api/comment/view-comment/${productId}`, 
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true

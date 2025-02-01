@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { message } from "antd";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+
 export default function Login() {
   const dispatch = useDispatch(); // Initialize the dispatch function
   const navigate = useNavigate(); // Initialize the navigate function
@@ -38,7 +40,7 @@ export default function Login() {
     console.log("Form Data before dispatch: ", data);
   
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", data, {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, data, {
         headers: {
           "Content-Type": "application/json",
         },
