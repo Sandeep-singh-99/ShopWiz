@@ -15,7 +15,7 @@ const cartRouter = require("./router/cart-router");
 const categoryRouter = require("./router/category-router");
 const commentRouter = require("./router/comment-router");
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 const numCPUs = os.cpus().length; // Get the number of CPU cores
 
 if (cluster.isMaster) {
