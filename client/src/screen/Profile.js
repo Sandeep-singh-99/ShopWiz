@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import img1 from "../assets/dl.beatsnoop 1.png";
 import { useNavigate } from "react-router-dom";
-import { logout, logoutAuth } from "../redux/slice/auth-slice";
+import { logoutAuth } from "../redux/slice/auth-slice";
 
 export default function Profile() {
-  const data = JSON.parse(localStorage.getItem("loginData"));
+  // const data = JSON.parse(localStorage.getItem("loginData"));
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logoutAuth());
-    localStorage.removeItem("token");
-    localStorage.removeItem("loginData");
     navigate("/");
   };
   return (

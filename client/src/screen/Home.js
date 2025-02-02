@@ -24,8 +24,7 @@ const productCategories = [
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth)
-  
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(checkAuth());
@@ -37,7 +36,7 @@ export default function Home() {
     } else {
       dispatch(restartCartCount());
     }
-  }, []);
+  }, [isAuthenticated, dispatch]);
 
   return (
     <div className="px-4 md:px-20 py-5">
@@ -45,7 +44,11 @@ export default function Home() {
         <HorizontalCategory />
         <CarouselView />
         {productCategories.map(({ category, heading }) => (
-          <HorizontalCardProduct key={category} category={category} heading={heading} />
+          <HorizontalCardProduct
+            key={category}
+            category={category}
+            heading={heading}
+          />
         ))}
       </div>
     </div>
