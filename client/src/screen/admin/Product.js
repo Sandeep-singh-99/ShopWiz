@@ -10,7 +10,7 @@ import CustomCard from "../../components/CustomCard";
 
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -35,12 +35,6 @@ export default function Product() {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // useEffect(() => {
-  //   if (products) {
-  //     console.log("Updated Products List:", products);
-  //   }
-  // }, [products]); // Run this whenever products change
-
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -48,7 +42,7 @@ export default function Product() {
   const handleCancel = () => {
     setIsModalVisible(false);
     clearForm();
-    dispatch(fetchProduct()); // Refetch the entire product list
+    dispatch(fetchProduct());
   };
 
   const clearForm = () => {
@@ -124,7 +118,7 @@ export default function Product() {
       message.error("Please fill in all required fields.");
       return;
     }
-  
+
     try {
       // Prepare JSON payload
       const payload = {
@@ -136,7 +130,7 @@ export default function Product() {
         productCategory: formData.productCategory,
         productImage: formData.imagePreview, // Use URLs or base64 strings for images
       };
-  
+
       const response = await axios.put(
         `${API_BASE_URL}/api/product/updateProduct/${updateProductId}`,
         payload,
@@ -146,7 +140,7 @@ export default function Product() {
           },
         }
       );
-  
+
       if (response.status !== 200) throw new Error("Failed to update product");
       message.success("Product updated successfully");
       handleCancel();
@@ -154,9 +148,8 @@ export default function Product() {
       message.error(`Error: ${error.message}`);
     }
   };
-  
 
-  //  
+  //
 
   const handleUpdate = (product) => {
     setFormData({
