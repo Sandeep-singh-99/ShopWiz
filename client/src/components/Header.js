@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <div className="border-b-2 border-black border-opacity-25">
       <div className="sm:px-20 px-5 flex justify-between items-center pt-5 pb-3">
-        <Link className="sm:text-4xl text-2xl font-bold" to={"/"}>
+        <Link className="sm:text-4xl text-3xl font-bold" to={"/"}>
           ShopWiz
         </Link>
 
@@ -57,7 +57,7 @@ export default function Header() {
                     <img
                       src={data.imageUrl}
                       alt={data.username || "User"}
-                      className="h-10 w-10 rounded-full object-contain"
+                      className="h-12 w-12 rounded-full object-contain"
                     />
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
