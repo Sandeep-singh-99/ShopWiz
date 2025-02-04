@@ -3,13 +3,17 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Header() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated,  isLoading } = useSelector((state) => state.auth);
   const { countData } = useSelector((state) => state.cart);
 
   let data = null;
   try {
     const loginData = localStorage.getItem("loginData");
-    data = loginData ? JSON.parse(loginData) : null;
+
+    // ✅ Use localStorage data **only if authentication is fulfilled**
+    if (!isLoading && isAuthenticated && loginData) {
+      data = JSON.parse(loginData);
+    }
   } catch (error) {
     console.error("Error parsing loginData:", error);
     localStorage.removeItem("loginData"); // Prevent future errors

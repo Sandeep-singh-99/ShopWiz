@@ -58,7 +58,7 @@ export const adminLogin = createAsyncThunk(
 
 const initialState = {
   isLoading: false,
-  isAuthenticated: !!localStorage.getItem("token"), // Use a boolean for clarity
+  isAuthenticated: false, //!!localStorage.getItem("token"), // Use a boolean for clarity
   error: null,
 };
 
@@ -82,6 +82,7 @@ const authSlice = createSlice({
     builder
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
+        state.isAuthenticated = false;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
