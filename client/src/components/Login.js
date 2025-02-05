@@ -76,14 +76,14 @@ export default function Login() {
   });
 
   return (
-    <div className="sm:pt-16 bg-gray-300 h-screen pt-5">
-      <div className="flex sm:justify-between justify-center items-center sm:px-16 px-4">
-        <div className="bg-[#c6e5e9] sm:block hidden w-1/2">
-          <img className="w-full" src={img1} alt="img1" loading="lazy" />
+    <div className="sm:pt-16  h-screen pt-5">
+      <div className="flex sm:justify-between justify-center">
+        <div className="bg-[#c6e5e9] sm:block hidden">
+          <img className="w-5/6" src={img1} alt="img1" loading="lazy" />
         </div>
 
-        <div className="flex sm:w-2/4 w-full shadow-2xl rounded-md sm:shadow-none sm:rounded-none flex-col justify-center items-center bg-white py-8">
-          <div className="sm:w-3/4 w-10/12 py-10">
+        <div className="flex sm:w-2/4 w-full shadow-2xl rounded-md sm:shadow-none sm:rounded-none flex-col justify-center items-center py-8">
+          <div className="sm:w-3/4 w-10/12 py-10 bg-white rounded-md shadow-md px-10">
             <h1 className="sm:text-4xl text-3xl font-bold sm:font-semibold mb-3">
               Log in to ShopWiz
             </h1>

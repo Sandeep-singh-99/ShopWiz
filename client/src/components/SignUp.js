@@ -74,8 +74,8 @@ export default function Register() {
           <img className="w-5/6" src={img1} alt="img1" loading="lazy" />
         </div>
 
-        <div className="flex sm:w-2/4 w-3/4 shadow-2xl rounded-xl sm:shadow-none sm:rounded-none flex-col text-center justify-center items-center">
-          <div className="sm:w-1/2 w-10/12 py-5">
+        <div className="flex sm:w-2/4 w-4/5 flex-col text-center justify-center items-center">
+          <div className="sm:w-2/3 w-10/12 py-5 bg-white rounded-md shadow-md px-10">
             <h1 className="sm:text-4xl text-2xl sm:font-semibold font-bold mb-3">
               Create an account
             </h1>
