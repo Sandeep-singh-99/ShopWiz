@@ -39,7 +39,8 @@ if (cluster.isMaster) {
     max: 1000,
     message: {
       status: 429,
-      message: "Too many requests from this IP, please try again after 15 minutes",
+      message:
+        "Too many requests from this IP, please try again after 15 minutes",
     },
     standardHeaders: true,
     legacyHeaders: false,
@@ -49,12 +50,28 @@ if (cluster.isMaster) {
   app.use(limiter);
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(
-    cors({
-      origin: "http://localhost:3000",
-      credentials: true,
-    })
-  );
+
+  const allowedOrigins = [
+    "https://shop-wiz.vercel.app/", // Production URL
+    "https://shop-wiz-git-master-sandeep-singh-99s-projects.vercel.app/", // Preview URL
+    "https://shop-qqy07d7hb-sandeep-singh-99s-projects.vercel.app/",
+    "https://shop-wiz-sandeep-singh-99s-projects.vercel.app/",
+  ];
+
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("Not allowed by CORS")); // Reject the request
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  };
+
+  app.use(cors(corsOptions));
   app.use(cookieParser());
 
   app.use("/api/auth", authRouter);
@@ -71,7 +88,9 @@ if (cluster.isMaster) {
   ConnectDB()
     .then(() => {
       app.listen(PORT, () => {
-        console.log(`Worker ${process.pid} is running on http://localhost:${PORT}`);
+        console.log(
+          `Worker ${process.pid} is running on http://localhost:${PORT}`
+        );
       });
     })
     .catch((error) => {
