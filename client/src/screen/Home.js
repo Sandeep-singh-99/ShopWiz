@@ -39,7 +39,7 @@ export default function Home() {
   }, [isAuthenticated, dispatch]);
 
   return (
-    <div className="px-4 md:px-20 py-5">
+    <div className="px-2 sm:px-20 py-5">
       <div className="flex flex-col gap-5">
         <HorizontalCategory />
         <CarouselView />

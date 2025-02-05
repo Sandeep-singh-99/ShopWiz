@@ -67,14 +67,14 @@ export default function ProductDetails() {
 
   return (
     <>
-      <div className="bg-slate-200">
+      <div className="bg-slate-100">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-wrap -mx-4">
             <div className="w-full md:w-1/2 px-4 mb-8">
               <img
                 src={selectedImage}
                 alt="Selected Product"
-                className="w-full h-96 object-contain mix-blend-multiply rounded-lg shadow-md mb-4"
+                className="w-full h-96 object-contain mix-blend-multiply rounded-lg shadow-md mb-4 border-2 border-gray-300"
                 id="mainImage"
               />
               <div className="flex gap-4 py-4 justify-center overflow-x-auto">
@@ -85,7 +85,7 @@ export default function ProductDetails() {
                       src={img}
                       alt={product.productName}
                       loading="lazy"
-                      className={`size-16 sm:size-20 object-contain rounded-md cursor-pointer ${
+                      className={`size-16 sm:size-20 object-contain border-2 border-gray-300  rounded-md cursor-pointer ${
                         selectedImage === img ? "opacity-100" : "opacity-60"
                       } hover:opacity-100 transition duration-300`}
                       onClick={() => setSelectedImage(img)}

@@ -75,7 +75,7 @@ export default function CategoryProduct() {
   const addToCart = useAddToCart();
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container sm:px-20 mx-auto py-8">
       {/* Mobile filter toggle */}
       <button
         className="lg:hidden block bg-gray-200 text-gray-700 px-4 py-2 rounded-md mb-4"
@@ -154,7 +154,7 @@ export default function CategoryProduct() {
                   <div className="bg-gray-200 h-48 flex justify-center items-center">
                     <img
                       src={product?.productImage[0]}
-                      className="object-contain w-full h-full"
+                      className="object-contain mix-blend-multiply w-full h-full"
                       alt={product.productName}
                     />
                   </div>

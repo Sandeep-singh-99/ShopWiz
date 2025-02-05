@@ -9,7 +9,9 @@ function App() {
   return (
     <>
       {!hideHeader.includes(location.pathname) && <Header />}
-      <Outlet />
+     <div className="min-h-[calc(100vh-120px)] bg-gray-100">
+      <Outlet/>
+      </div>
       {!hideHeader.includes(location.pathname) && <Footer />}
     </>
   );

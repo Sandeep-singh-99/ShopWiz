@@ -38,27 +38,27 @@ export default function HorizontalCategory() {
   };
 
   return (
-    <div className="container mx-auto flex justify-center items-center">
-      {/* Horizontal Scroll Wrapper */}
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide py-4 pr-6">
+    <div className="container mx-auto">
+      {/* Flex layout to keep all categories in one line */}
+      <div className="flex gap-2 md:gap-4 justify-between overflow-x-auto whitespace-nowrap scrollbar-hide w-full sm:justify-center py-4">
         {category.map((item) => (
           <div
             key={item.id}
-            className="cursor-pointer flex flex-col items-center group flex-shrink-0"
+            className="cursor-pointer flex flex-col justify-center items-center group flex-shrink-0 transition-all duration-300 ease-in-out"
             onClick={() => handleCategoryClick(item.name)}
           >
             {/* Category Image */}
-            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-[#e1e8f0] transition-transform duration-200 group-hover:scale-110">
+            <div className="w-16 h-16 sm:w-20 sm:h-20  rounded-full overflow-hidden p-2 bg-gradient-to-b from-gray-100 to-white shadow-md flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:shadow-lg">
               <img
                 loading="lazy"
-                className="h-12 object-contain mix-blend-multiply transition-transform duration-200 ease-in-out group-hover:scale-125"
+                className="h-full object-scale-down mix-blend-multiply transition-transform duration-300 ease-in-out group-hover:scale-125"
                 src={item.img}
                 alt={item.name}
               />
             </div>
 
             {/* Category Name */}
-            <span className="mt-2 text-sm font-medium text-gray-800 group-hover:text-[#db4444]">
+            <span className="mt-1 text-xs md:text-sm font-medium text-gray-800 transition-colors duration-200 group-hover:text-[#db4444]">
               {item.name}
             </span>
           </div>
@@ -76,3 +76,7 @@ export default function HorizontalCategory() {
     </div>
   );
 }
+
+
+
+

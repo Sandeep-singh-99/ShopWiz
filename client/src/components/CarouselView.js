@@ -1,35 +1,107 @@
-import React from 'react'
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import React, { useEffect, useState } from 'react'
+import image1 from '../assests/img1.webp'
+import image2 from '../assests/img2.webp'
+import image3 from '../assests/img3.jpg'
+import image4 from '../assests/img4.jpg'
+import image5 from '../assests/img5.webp'
 
-import { Carousel } from 'react-responsive-carousel';
 
-import img2 from '../assets/img2.webp'
-import img3 from '../assets/img3.jpg'
-import img4 from '../assets/img4.jpg'
+import image1Mobile from '../assests/img1_mobile.jpg'
+import image2Mobile from '../assests/img2_mobile.webp'
+import image3Mobile from '../assests/img3_mobile.jpg'
+import image4Mobile from '../assests/img4_mobile.jpg'
+import image5Mobile from '../assests/img5_mobile.png'
 
-export default function CarouselView() {
+import { FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
+
+
+const BannerProduct = () => {
+    const [currentImage,setCurrentImage] = useState(0)
+
+    const desktopImages = [
+        image1,
+        image2,
+        image3,
+        image4,
+        image5
+    ]
+
+    const mobileImages = [
+        image1Mobile,
+        image2Mobile,
+        image3Mobile,
+        image4Mobile,
+        image5Mobile
+    ]
+
+    const nextImage = () =>{
+        if(desktopImages.length - 1 > currentImage){
+            setCurrentImage(preve => preve + 1)
+        }
+    }
+
+    const preveImage = () =>{
+        if(currentImage != 0){
+            setCurrentImage(preve => preve - 1)
+        }
+    }
+
+
+    useEffect(()=>{
+        const interval = setInterval(()=>{
+            if(desktopImages.length - 1 > currentImage){
+                nextImage()
+            }else{
+                setCurrentImage(0)
+            }
+        },5000)
+
+        return ()=> clearInterval(interval)
+    },[currentImage])
+
   return (
-    <Carousel className='' dynamicHeight emulateTouch infiniteLoop autoPlay showStatus={false} showArrows={false} showIndicators={false} showThumbs={false}>
-      {/* <div>
-        <img src={img1} alt='not showing'/>
-      </div> */}
+    <div className='container mx-auto px-4 rounded '>
+        <div className='h-56 md:h-72 w-full bg-slate-200 relative'>
 
-      <div>
-        <img src={img2} alt='not showing'/>
-      </div>
+                <div className='absolute z-10 h-full w-full md:flex items-center hidden '>
+                    <div className=' flex justify-between w-full text-2xl'>
+                        <button onClick={preveImage} className='bg-white shadow-md rounded-full p-1'><FaAngleLeft/></button>
+                        <button onClick={nextImage} className='bg-white shadow-md rounded-full p-1'><FaAngleRight/></button> 
+                    </div>
+                </div>
 
-      <div>
-        <img src={img3} alt='not showing'/>
-      </div>
+                {/**desktop and tablet version */}
+              <div className='hidden md:flex h-full w-full overflow-hidden'>
+                {
+                        desktopImages.map((imageURl,index)=>{
+                            return(
+                            <div className='w-full h-full min-w-full min-h-full transition-all' key={imageURl} style={{transform : `translateX(-${currentImage * 100}%)`}}>
+                                <img src={imageURl} className='w-full h-full'/>
+                            </div>
+                            )
+                        })
+                }
+              </div>
 
-      <div>
-        <img src={img4} alt='not showing'/>
-      </div>
 
-      {/* <div>
-        <img src={img5} alt='not showing'/>
-      </div> */}
-      
-    </Carousel>
+                {/**mobile version */}
+                <div className='flex h-full w-full overflow-hidden md:hidden'>
+                {
+                        mobileImages.map((imageURl,index)=>{
+                            return(
+                            <div className='w-full h-full min-w-full min-h-full transition-all' key={imageURl} style={{transform : `translateX(-${currentImage * 100}%)`}}>
+                                <img src={imageURl} className='w-full h-full object-cover'/>
+                            </div>
+                            )
+                        })
+                }
+              </div>
+
+
+        </div>
+    </div>
   )
 }
+
+export default BannerProduct
