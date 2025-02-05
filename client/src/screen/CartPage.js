@@ -59,7 +59,7 @@ export default function CartPage() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto my-10 p-5">
+    <div className="max-w-5xl mx-auto py-10 p-5">
       <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1">
