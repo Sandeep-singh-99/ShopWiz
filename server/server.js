@@ -54,7 +54,6 @@ if (cluster.isMaster) {
   const corsOptions = {
     origin: "*", // Allow all origins (for local testing only, not recommended for production)
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   };
 
