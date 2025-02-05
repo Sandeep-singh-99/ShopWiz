@@ -51,13 +51,28 @@ if (cluster.isMaster) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  const allowedOrigins = [
+    "http://localhost:3000",  // Local development
+    "https://shop-wiz.vercel.app/",  // Production URL
+    "https://shop-wiz-git-master-sandeep-singh-99s-projects.vercel.app/" // Another example URL
+  ];
+  
   const corsOptions = {
-    origin: "*", // Allow all origins (for local testing only, not recommended for production)
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        // Allow the request if the origin is in the allowedOrigins list, or if there is no origin (for example, in certain local cases)
+        callback(null, true);
+      } else {
+        // Reject the request if the origin is not in the allowed list
+        callback(new Error("Not allowed by CORS"), false);
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   };
-
-  app.use("*",cors(corsOptions));
+  
+  app.use(cors(corsOptions));
+  
   app.use(cookieParser());
 
   app.use("/api/auth", authRouter);
