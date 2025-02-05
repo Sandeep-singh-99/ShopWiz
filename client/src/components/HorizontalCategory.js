@@ -2,18 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import Category Images
-import img1 from "../assets/category/mouse.webp";
-import img2 from "../assets/category/airpodes.webp";
-import img3 from "../assets/category/camera.jpg";
-import img4 from "../assets/category/earpodes.webp";
-import img5 from "../assets/category/mobile.webp";
-import img6 from "../assets/category/printer.webp";
-import img7 from "../assets/category/Processor.png";
-import img8 from "../assets/category/refrigerator.webp";
-import img9 from "../assets/category/speaker.webp";
-import img10 from "../assets/category/tv.webp";
-import img11 from "../assets/category/trimmers.webp";
-import img12 from "../assets/category/watch.webp";
+import img1 from "../assests/category/mouse.webp";
+import img2 from "../assests/category/airpodes.webp";
+import img3 from "../assests/category/camera.jpg";
+import img4 from "../assests/category/earpodes.webp";
+import img5 from "../assests/category/mobile.webp";
+import img6 from "../assests/category/printer.webp";
+import img7 from "../assests/category/Processor.png";
+import img8 from "../assests/category/refrigerator.webp";
+import img9 from "../assests/category/speaker.webp";
+import img10 from "../assests/category/tv.webp";
+import img11 from "../assests/category/trimmers.webp";
+import img12 from "../assests/category/watch.webp";
 
 export default function HorizontalCategory() {
   const navigate = useNavigate();
