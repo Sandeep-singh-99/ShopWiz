@@ -46,7 +46,7 @@
     ]
   },
   "engines": {
-    "node": "16.x"
+    "node": "22.x"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",
