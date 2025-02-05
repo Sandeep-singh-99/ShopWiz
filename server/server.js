@@ -52,7 +52,7 @@ if (cluster.isMaster) {
   app.use(express.urlencoded({ extended: true }));
 
   app.use(cors({
-    origin: " http://localhost:3000", //"https://shop-wiz.vercel.app",
+    origin:"https://shop-wiz.vercel.app",
     credentials: true,
   }))
   
