@@ -56,6 +56,7 @@ if (cluster.isMaster) {
     "https://shop-wiz-git-master-sandeep-singh-99s-projects.vercel.app/", // Preview URL
     "https://shop-qqy07d7hb-sandeep-singh-99s-projects.vercel.app/",
     "https://shop-wiz-sandeep-singh-99s-projects.vercel.app/",
+    "http://localhost:3000",
   ];
 
   const corsOptions = {
