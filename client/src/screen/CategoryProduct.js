@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../redux/slice/category-slice";
-import { fetchProduct } from "../redux/slice/product-slice";
 import useAddToCart from "../helpers/useAddToCart";
 
 export default function CategoryProduct() {

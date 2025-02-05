@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import img1 from "../assests/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+
 import { message } from "antd";
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 export default function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const [uploadedImage, setUploadedImage] = useState(null);
   const [formData, setFormData] = useState({
     imageUrl: null, // Store the image URL as a string
