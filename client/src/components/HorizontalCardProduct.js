@@ -34,7 +34,7 @@ export default function HorizontalCardProduct({ category, heading }) {
   }, [category]);
 
   return (
-    <div className="container mx-auto px-4 py-4 my-8 relative">
+    <div className="container mx-auto px-4 my-4 relative">
       {/* Section Heading */}
       <div className="flex items-center gap-3 pb-4">
         <div className="bg-[#db4444] w-4 h-10 rounded"></div>

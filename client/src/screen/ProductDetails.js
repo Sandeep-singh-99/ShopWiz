@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { fetchProductById } from "../redux/slice/product-slice";
 import { message } from "antd";
 import { AddComment, clearComment, GetComments } from "../redux/slice/comment-slice";
+import useAddToCart from "../helpers/useAddToCart";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -43,9 +44,6 @@ export default function ProductDetails() {
       dispatch(clearComment());
       dispatch(fetchProductById(id))
         .unwrap()
-        .then(() => {
-          message.success("Product fetched successfully.");
-        })
         .catch(() => {
           message.error("Failed to fetch product.");
         });
@@ -60,6 +58,8 @@ export default function ProductDetails() {
       setSelectedImage(product.productImage[0]);
     }
   }, [product]);
+
+  const addToCart = useAddToCart();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -113,10 +113,13 @@ export default function ProductDetails() {
               <p className="text-gray-700 mb-6">{product.productDescription}</p>
 
               <div className="flex space-x-4 mb-6">
-                <button className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <button onClick={(e) => {
+                        e.preventDefault();
+                        addToCart(product._id);
+                      }} className="flex gap-2 items-center text-white bg-[#db4444] hover:bg-[#db4411] font-semibold px-6 py-2 rounded-md focus:outline-none focus:ring-2  focus:ring-offset-2">
                   Add to Cart
                 </button>
-                <button className="bg-gray-200 flex gap-2 items-center text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <button className="bg-gray-600 flex gap-2 items-center  text-white font-semibold px-6 py-2 rounded-md focus:outline-none focus:ring-2  focus:ring-offset-2">
                   Wishlist
                 </button>
               </div>
