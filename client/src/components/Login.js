@@ -146,7 +146,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { message } from "antd";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL;
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -194,9 +194,9 @@ export default function Login() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-3xl font-semibold text-gray-700 mb-4 text-center">Log in to ShopWiz</h1>
+    <div className="flex sm:item-center sm:justify-center lg:pt-20 md:pt-16 sm:pt-8 pt-4 px-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 sm:p-8 ">
+        <h1 className="text-3xl font-semibold text-gray-700 mb-2 text-center">Log in to ShopWiz</h1>
         <p className="text-gray-500 mb-6 text-center">Enter your details below</p>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
@@ -204,7 +204,8 @@ export default function Login() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+            className="w-full border border-gray-300 rounded-lg sm:px-4 px-2 py-1 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Email"
           />
           <input
@@ -212,12 +213,13 @@ export default function Login() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+            className="w-full border border-gray-300 rounded-lg sm:px-4 px-2 py-1 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Password"
           />
           <button
             type="submit"
-            className="w-full bg-[#e07575] text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-[#e07575] text-white py-2 rounded-lg hover:bg-[#e07586] transition"
           >
             Log In
           </button>

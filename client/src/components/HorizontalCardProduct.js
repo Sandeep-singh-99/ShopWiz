@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { message } from "antd";
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL;
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const ProductCard = lazy(() => import("./ProductCard")); // Lazy Loading
 

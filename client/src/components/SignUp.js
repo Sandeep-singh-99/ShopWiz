@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL;
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export default function Register() {
   const navigate = useNavigate();
