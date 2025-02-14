@@ -20,9 +20,9 @@ export default function Header() {
   }
 
   return (
-    <div className="border-b-2 border-black border-opacity-25">
+    <div className=" bg-slate-900 border-b-2">
       <div className=" px-5 flex justify-between items-center pt-5 pb-3">
-        <Link className="sm:text-4xl text-3xl font-bold" to={"/"}>
+        <Link className="sm:text-4xl text-white text-3xl font-bold" to={"/"}>
           ShopWiz
         </Link>
 
@@ -42,7 +42,7 @@ export default function Header() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="mt-4 h-6 w-6"
+                className="mt-4 h-6 w-6 text-white"
               >
                 <path
                   strokeLinecap="round"
@@ -77,7 +77,7 @@ export default function Header() {
             ) : (
               <Link
                 to={"login"}
-                className="border text-white font-semibold px-4 py-2 rounded-md bg-[#db4444] hover:bg-[#db3333]"
+                className=" text-white font-semibold px-4 py-2 rounded-md bg-[#db4444] hover:bg-[#db3333]"
               >
                 Login
               </Link>

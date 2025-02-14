@@ -38,9 +38,9 @@ export default function HorizontalCategory() {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto container">
       {/* Flex layout to keep all categories in one line */}
-      <div className="flex gap-2 md:gap-4 justify-between overflow-x-auto whitespace-nowrap scrollbar-hide w-full sm:justify-center py-4">
+      <div className="flex gap-2 md:gap-6 overflow-x-auto sm:justify-center md:justify-center sm:overflow-hidden whitespace-nowrap scroll-hide w-full  py-4">
         {category.map((item) => (
           <div
             key={item.id}
@@ -48,7 +48,7 @@ export default function HorizontalCategory() {
             onClick={() => handleCategoryClick(item.name)}
           >
             {/* Category Image */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20  rounded-full overflow-hidden p-2 bg-gradient-to-b from-gray-100 to-white shadow-md flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:shadow-lg">
+            <div className="w-16 h-16 sm:w-13 sm:h-13 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 rounded-full overflow-hidden p-2 bg-gradient-to-b from-gray-100 to-white shadow-md flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:shadow-lg">
               <img
                 loading="lazy"
                 className="h-full object-scale-down mix-blend-multiply transition-transform duration-300 ease-in-out group-hover:scale-125"
@@ -58,21 +58,12 @@ export default function HorizontalCategory() {
             </div>
 
             {/* Category Name */}
-            <span className="mt-1 text-xs md:text-sm font-medium text-gray-800 transition-colors duration-200 group-hover:text-[#db4444]">
+            <span className="mt-1 text-xs md:text-sm font-medium text-white transition-colors duration-200 group-hover:text-[#db4444]">
               {item.name}
             </span>
           </div>
         ))}
       </div>
-
-      {/* Hide Scrollbar for Chrome, Safari, and Edge */}
-      <style>
-        {`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}
-      </style>
     </div>
   );
 }

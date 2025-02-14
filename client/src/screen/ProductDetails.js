@@ -120,7 +120,7 @@ export default function ProductDetails() {
                   Add to Cart
                 </button>
                 <button className="bg-gray-600 flex gap-2 items-center  text-white font-semibold px-6 py-2 rounded-md focus:outline-none focus:ring-2  focus:ring-offset-2">
-                  Wishlist
+                  Buy Now
                 </button>
               </div>
             </div>

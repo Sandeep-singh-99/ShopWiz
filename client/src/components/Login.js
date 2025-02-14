@@ -1,144 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import img1 from "../assests/dl.beatsnoop 1.png";
-// import { Link, useNavigate } from "react-router-dom";
-// import { login } from "../redux/slice/auth-slice";
-// import { useDispatch } from "react-redux";
-// import axios from "axios";
-// import { message } from "antd";
-
-// const API_BASE_URL = process.env.REACT_APP_API_URL;
-
-// export default function Login() {
-//   const dispatch = useDispatch(); // Initialize the dispatch function
-//   const navigate = useNavigate(); // Initialize the navigate function
-
-//   // Initialize the form data state
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-//   // Handle form input changes
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!formData.email || !formData.password) {
-//       alert("Please fill in all fields.");
-//       return;
-//     }
-
-//     const data = {
-//       email: formData.email,
-//       password: formData.password,
-//     };
-
-//     console.log("Form Data before dispatch: ", data);
-
-//     try {
-//       const response = await axios.post(
-//         `${API_BASE_URL}/api/auth/login`,
-//         data,
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           withCredentials: true,
-//         }
-//       );
-
-//       if (response.status === 200 && response.data.success) {
-//         const { data: userData } = response.data;
-//         if (userData) {
-//           localStorage.setItem("token", userData.accesstoken);
-//           localStorage.setItem("loginData", JSON.stringify(userData.user));
-
-//           dispatch(login(userData.user));
-//         }
-//         navigate("/");
-//         message.success("Login successful");
-//       } else {
-//         message.error("Login failed");
-//       }
-//     } catch (error) {
-//       alert("Error logging in");
-//       console.log("Error: ", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (localStorage.getItem("token")) {
-//       navigate("/");
-//     }
-//   });
-
-//   return (
-//     <div className="sm:pt-16  h-screen pt-5">
-//       <div className="flex sm:justify-between justify-center">
-//         <div className="bg-[#c6e5e9] sm:block hidden">
-//           <img className="w-5/6" src={img1} alt="img1" loading="lazy" />
-//         </div>
-
-//         <div className="flex sm:w-2/4 w-full shadow-2xl rounded-md sm:shadow-none sm:rounded-none flex-col justify-center items-center py-8">
-//           <div className="sm:w-3/4 w-10/12 py-10 bg-white rounded-md shadow-md px-10">
-//             <h1 className="sm:text-4xl text-3xl font-bold sm:font-semibold mb-3">
-//               Log in to ShopWiz
-//             </h1>
-//             <h2 className="sm:text-lg text-sm">Enter your details below</h2>
-
-//             <form className="mt-7" onSubmit={handleSubmit}>
-//               <div className="mb-5">
-//                 <input
-//                   name="email"
-//                   type="email"
-//                   value={formData.email}
-//                   onChange={handleChange}
-//                   className="border-b-2 w-full outline-none py-2 px-4"
-//                   placeholder="Email"
-//                 />
-//               </div>
-
-//               <div className="mb-5">
-//                 <input
-//                   name="password"
-//                   type="password"
-//                   onChange={handleChange}
-//                   value={formData.password}
-//                   className="border-b-2 w-full outline-none py-2 px-4"
-//                   placeholder="Password"
-//                 />
-//               </div>
-
-//               <div className="mb-5">
-//                 <button className="bg-[#e07575] w-full text-white px-7 py-2 rounded-md">
-//                   Log In
-//                 </button>
-//               </div>
-
-//               <div className="flex justify-center">
-//                 <h1 className="text-gray-600">
-//                   Don't have an account?
-//                   <Link
-//                     to={"/register"}
-//                     className="text-blue-600 ml-1 border-b-2 border-blue-400"
-//                   >
-//                     Sign Up
-//                   </Link>
-//                 </h1>
-//               </div>
-//             </form>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/slice/auth-slice";
@@ -168,7 +27,10 @@ export default function Login() {
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/login`,
         formData,
-        { headers: { "Content-Type": "application/json" }, withCredentials: true }
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
       );
 
       if (response.status === 200 && response.data.success) {
@@ -194,43 +56,67 @@ export default function Login() {
   }, [navigate]);
 
   return (
-    <div className="flex sm:item-center sm:justify-center lg:pt-20 md:pt-16 sm:pt-8 pt-4 px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 sm:p-8 ">
-        <h1 className="text-3xl font-semibold text-gray-700 mb-2 text-center">Log in to ShopWiz</h1>
-        <p className="text-gray-500 mb-6 text-center">Enter your details below</p>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded-lg sm:px-4 px-2 py-1 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded-lg sm:px-4 px-2 py-1 sm:py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Password"
-          />
-          <button
-            type="submit"
-            className="w-full bg-[#e07575] text-white py-2 rounded-lg hover:bg-[#e07586] transition"
-          >
-            Log In
-          </button>
-        </form>
-        <p className="mt-4 text-gray-600 text-center">
-          Don't have an account?
-          <Link to="/register" className="text-blue-600 ml-1 border-b-2 border-blue-400">
-            Sign Up
-          </Link>
-        </p>
+    <section class="bg-gray-50 dark:bg-gray-900">
+      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Sign in to your account
+            </h1>
+            <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label
+                  for="email"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Email address"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required=""
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                Sign in
+              </button>
+              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?{" "}
+                <Link
+                  to={"/register"}
+                  class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
